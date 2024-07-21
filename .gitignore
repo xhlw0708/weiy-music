@@ -1,0 +1,5 @@
+.idea
+/music-app/*.iml
+/music-app/.gradle
+/music-app/.idea
+/music-app/app/build

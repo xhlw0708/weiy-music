@@ -1,0 +1,247 @@
+<mxfile host="Electron" modified="2024-07-21T03:14:24.838Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="_VOmYQKCFLq8rXAGMm7W" version="21.7.5" type="device">
+  <diagram name="第 1 页" id="4hHL53P4-OzIi1WCuzci">
+    <mxGraphModel dx="2261" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-380" y="100" width="360" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-4" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-380" y="620" width="360" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-5" value="首页" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="-380" y="620" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-6" value="我的" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="-130" y="620" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-7" value="乐馆" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="-270" y="620" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-8" value="搜索框" style="rounded=1;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="-370" y="110" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-12" value="主体界面" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="-390" y="60" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-20" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="100" width="360" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-21" value="首页" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="90" y="620" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-22" value="乐馆" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="210" y="620" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-23" value="我的" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="330" y="620" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-24" value="搜索框" style="rounded=1;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="100" y="110" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-25" value="首页" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="85" y="60" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-26" value="轮播图" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="100" y="160" width="340" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-27" value="歌手" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="290" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-28" value="排行榜" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="290" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-30" value="大家都在听" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="100" y="370" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-31" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="400" width="340" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-33" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="114" y="410" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-34" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="114" y="510" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-35" value="img" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="125" y="420" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-36" value="晴天" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="180" y="420" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-37" value="周杰伦" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="180" y="440" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-38" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="100" width="360" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-39" value="乐馆" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="530" y="50" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-40" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-355" y="560" width="310" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-41" value="img" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-342.5" y="567.5" width="35" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-42" value="周杰伦" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-307.5" y="570" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-43" value="- 说了再见" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-260" y="570" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-44" value="||" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="-85" y="575" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-46" value="搜索框" style="rounded=1;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="540" y="110" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-47" value="首页" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="530" y="620" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-48" value="乐馆" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="650" y="620" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-49" value="我的" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="770" y="620" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-51" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="160" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-52" value="推荐" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="550" y="165" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-53" value="日语" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="610" y="165" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-54" value="英语" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="670" y="165" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-55" value="网络流行" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="730" y="165" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-56" value="rap" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="790" y="165" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-57" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="220" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-58" value="img" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="560" y="230" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-59" value="晴天" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="590" y="220" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-60" value="周杰伦" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="590" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-61" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.heart" vertex="1" parent="1">
+          <mxGeometry x="805" y="236.25" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-66" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.acute_triangle;dx=0.5;rotation=0;direction=south;" vertex="1" parent="1">
+          <mxGeometry x="840" y="232.5" width="20" height="27.5" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-130" value="与乐馆类似" style="rounded=0;whiteSpace=wrap;html=1;fontSize=21;fontStyle=3" vertex="1" parent="1">
+          <mxGeometry x="-380" y="770" width="360" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-131" value="我喜欢" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="-380" y="730" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-132" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=21;fontStyle=3" vertex="1" parent="1">
+          <mxGeometry x="80" y="760" width="360" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-133" value="播放界面-歌曲" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="75" y="730" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-134" value="" style="triangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="347.5" y="1270" width="25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-135" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="247.5" y="1262.5" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-136" value="" style="triangle;whiteSpace=wrap;html=1;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="165" y="1270" width="25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-140" value="img" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="135" y="840" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-141" value="歌曲" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="188" y="780" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-142" value="歌词" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="780" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-143" value="迷人的危险" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="132.5" y="1080" width="115" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-144" value="dance flow" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1139" width="75" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-145" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.heart" vertex="1" parent="1">
+          <mxGeometry x="380" y="1119" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-146" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="515" y="760" width="360" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-147" value="我的" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="515" y="730" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-148" value="首页" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="515" y="1280" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-149" value="乐馆" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="635" y="1280" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-150" value="我的" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="755" y="1280" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-151" value="搜索框" style="rounded=1;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="525" y="770" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-152" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="535" y="820" width="320" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-153" value="avatar" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="555" y="835" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-154" value="Ikun" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="645" y="835" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-155" value="喜欢：191" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="655" y="870" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-156" value="" style="shape=partialRectangle;whiteSpace=wrap;html=1;right=0;top=0;bottom=0;fillColor=none;routingCenterX=-0.5;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="825" y="840" width="10" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-157" value="" style="shape=partialRectangle;whiteSpace=wrap;html=1;right=0;top=0;bottom=0;fillColor=none;routingCenterX=-0.5;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="825" y="850" width="10" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-158" value="" style="shape=partialRectangle;whiteSpace=wrap;html=1;right=0;top=0;bottom=0;fillColor=none;routingCenterX=-0.5;rotation=-90;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="825" y="860" width="10" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-159" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.heart" vertex="1" parent="1">
+          <mxGeometry x="555" y="950" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-160" value="喜欢" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="540" y="980" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-161" value="11" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="540" y="1000" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-162" value="最近播放" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="535" y="1060" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-163" value="更多 &amp;gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="795" y="1060" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-164" value="img" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="537.5" y="1100" width="65" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-165" value="唯一 · 王力宏" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="535" y="1170" width="80" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

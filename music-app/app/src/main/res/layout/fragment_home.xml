@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".main.home.HomeFragment">
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/home_carousel_view_pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.viewpager2.widget.ViewPager2>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.35" />
+
+        <ImageView
+            android:id="@+id/home_special_column_singer"
+            android:layout_width="204dp"
+            android:layout_height="34dp"
+            android:src="@drawable/special_column_singer"
+            app:layout_constraintBottom_toTopOf="@+id/home_special_column_singer_title"
+            app:layout_constraintEnd_toStartOf="@+id/home_special_column_ranking"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:contentDescription="@string/content_description_singer" />
+
+        <ImageView
+            android:id="@+id/home_special_column_ranking"
+            android:layout_width="204dp"
+            android:layout_height="34dp"
+            android:src="@drawable/special_column_ranking"
+            app:layout_constraintBottom_toBottomOf="@+id/home_special_column_singer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/home_special_column_singer"
+            app:layout_constraintTop_toTopOf="@+id/home_special_column_singer"
+            android:contentDescription="@string/content_description_ranking" />
+
+        <TextView
+            android:id="@+id/home_special_column_singer_title"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/content_description_singer"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toStartOf="@+id/home_special_column_ranking_title"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/home_special_column_ranking_title"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/content_description_ranking"
+            app:layout_constraintBottom_toBottomOf="@+id/home_special_column_singer_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/home_special_column_singer_title"
+            app:layout_constraintTop_toTopOf="@+id/home_special_column_singer_title" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/everyone_listen"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_listen_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

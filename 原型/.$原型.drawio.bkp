@@ -1,0 +1,25 @@
+<mxfile host="Electron" modified="2024-07-20T04:28:31.421Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.7.5 Chrome/114.0.5735.289 Electron/25.8.1 Safari/537.36" etag="W_Uf9X0X4ybK1ta9HhVO" version="21.7.5" type="device">
+  <diagram name="第 1 页" id="4hHL53P4-OzIi1WCuzci">
+    <mxGraphModel dx="1434" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="140" width="360" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-4" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="660" width="360" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-5" value="音乐" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="200" y="660" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-6" value="我的" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="450" y="660" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="vQLxhcx2_oaJsGIZo3zW-7" value="我的" style="rounded=0;whiteSpace=wrap;html=1;fontSize=17;" vertex="1" parent="1">
+          <mxGeometry x="310" y="660" width="140" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">唯忆音乐</string>
+    <string name="home_title">主页</string>
+    <string name="mine_title">我的</string>
+    <string name="music_hall_title">乐馆</string>
+    <string name="content_description_singer">歌手</string>
+    <string name="content_description_ranking">排行榜</string>
+    <string name="everyone_listen">大家都在听</string>
+</resources>
