@@ -35,7 +35,8 @@ class SongListAdapter(private val songList: List<Song>, private val fragmentFlag
                 holder.isLike.setOnClickListener{
                     song.isLike = if (song.isLike == 0) 1 else 0
                     if (song.isLike == 0) holder.isLike.setImageResource(R.drawable.favorite_border)
-                    else holder.isLike.setImageResource(R.drawable.favorite)
+                    else holder.isLike.setImageResource(R.drawable.favorite_normal)
+
                 }
             }
         }
