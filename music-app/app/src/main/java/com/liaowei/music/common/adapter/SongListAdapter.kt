@@ -7,9 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.liaowei.music.R
+import com.liaowei.music.common.constant.FragmentFlag
 import com.liaowei.music.main.model.Song
 
-class SongListAdapter(private val songList: List<Song>) :
+class SongListAdapter(private val songList: List<Song>, private val fragmentFlag: Int) :
     RecyclerView.Adapter<SongListAdapter.SongListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -25,12 +26,19 @@ class SongListAdapter(private val songList: List<Song>) :
         holder.songName.text = song.name
         holder.songSinger.text = if (song.singerId == 1L) "周杰伦" else "蔡徐坤"
 
-        holder.isLike.setOnClickListener{
-            song.isLike = if (song.isLike == 0) 1 else 0
-            if (song.isLike == 0) holder.isLike.setImageResource(R.drawable.favorite_border)
-            else holder.isLike.setImageResource(R.drawable.favorite)
+        when(fragmentFlag) {
+            FragmentFlag.HOME_FRAGMENT -> {
+                holder.isLike.visibility = View.GONE
+                holder.download.visibility = View.GONE
+            }
+            else -> {
+                holder.isLike.setOnClickListener{
+                    song.isLike = if (song.isLike == 0) 1 else 0
+                    if (song.isLike == 0) holder.isLike.setImageResource(R.drawable.favorite_border)
+                    else holder.isLike.setImageResource(R.drawable.favorite)
+                }
+            }
         }
-
     }
 
     override fun getItemCount(): Int = songList.size

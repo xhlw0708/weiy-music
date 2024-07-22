@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.liaowei.music.R
 import com.liaowei.music.common.adapter.SongListAdapter
+import com.liaowei.music.common.constant.FragmentFlag
 import com.liaowei.music.databinding.FragmentSongBinding
 import com.liaowei.music.main.model.Song
 
@@ -41,7 +42,7 @@ class SongFragment : Fragment() {
         songList.add(Song(4, "爱的飞行日记", 1, R.drawable.jay1, 1))
         songList.add(Song(5, "只因你太美", 2, R.drawable.ikun1, 1))
         songList.add(Song(6, "Hug Me", 2, R.drawable.ikun1, 1))
-        binding.commonSongListRv.adapter = SongListAdapter(songList)
+        binding.commonSongListRv.adapter = SongListAdapter(songList, FragmentFlag.SONG_FRAGMENT)
         binding.commonSongListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 }
