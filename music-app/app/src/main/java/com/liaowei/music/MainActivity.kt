@@ -17,6 +17,7 @@ import com.liaowei.music.common.adapter.ActivityViewPagerAdapter
 import com.liaowei.music.databinding.ActivityMainBinding
 import com.liaowei.music.main.hall.HallFragment
 import com.liaowei.music.main.home.HomeFragment
+import com.liaowei.music.main.mine.MineFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,8 +37,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         initView()
-
-
     }
 
     private fun initView() {
@@ -45,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentList = ArrayList<Fragment>()
         fragmentList.add(HomeFragment.newInstance())
         fragmentList.add(HallFragment.newInstance())
+        fragmentList.add(MineFragment.newInstance())
 
         // 设置viewPager
         val activityViewPagerAdapter = ActivityViewPagerAdapter(this, fragmentList)

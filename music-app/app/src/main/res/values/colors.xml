@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="weiy_theme_color">#5E7CE0</color>
+    <color name="weiy_gray_color">#898989</color>
 </resources>

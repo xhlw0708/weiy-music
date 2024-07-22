@@ -5,5 +5,13 @@
     <string name="music_hall_title">乐馆</string>
     <string name="content_description_singer">歌手</string>
     <string name="content_description_ranking">排行榜</string>
+    <string name="content_description_avatar">头像</string>
     <string name="everyone_listen">大家都在听</string>
+    <string name="content_description_like">喜欢</string>
+    <string name="content_description_download">下载</string>
+    <string name="content_description_mine_menu">菜单</string>
+    <string name="mine_recent_play">最近播放</string>
+    <string name="more_info">更多</string>
+    <string name="cover_img">封面图</string>
+    <string name="song_separator">·</string>
 </resources>
