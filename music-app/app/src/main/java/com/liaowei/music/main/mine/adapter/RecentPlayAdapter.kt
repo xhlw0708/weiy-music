@@ -21,6 +21,7 @@ class RecentPlayAdapter(private val songList: List<Song>): RecyclerView.Adapter<
         val song = songList[position]
         holder.coverImg.setImageResource(song.img)
         holder.playName.text = song.name
+        holder.playName.requestFocus() // 请求焦点
         holder.playSinger.text = if (song.singerId == 1L) "周杰伦" else "蔡徐坤"
     }
 
@@ -28,7 +29,7 @@ class RecentPlayAdapter(private val songList: List<Song>): RecyclerView.Adapter<
 
     inner class RecentPlayViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val coverImg: ImageView = itemView.findViewById(R.id.mine_recent_play_img)
-        val playName: TextView = itemView.findViewById(R.id.mine_recent_play_name)
+        var playName: TextView = itemView.findViewById(R.id.mine_recent_play_name)
         val playSinger: TextView = itemView.findViewById(R.id.mine_recent_play_singer)
     }
 }

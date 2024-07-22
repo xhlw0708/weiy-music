@@ -6,15 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.liaowei.music.R
+import com.liaowei.music.common.adapter.SongListAdapter
+import com.liaowei.music.databinding.FragmentSongBinding
+import com.liaowei.music.main.model.Song
 
 class SongFragment : Fragment() {
+
+    private val binding: FragmentSongBinding by lazy { FragmentSongBinding.inflate(layoutInflater) }
+    private val viewModel: SongViewModel by viewModels()
 
     companion object {
         fun newInstance() = SongFragment()
     }
-
-    private val viewModel: SongViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +29,19 @@ class SongFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_song, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val songList: ArrayList<Song> = ArrayList()
+        songList.add(Song(1, "爱的飞行日记", 1, R.drawable.jay1, 1))
+        songList.add(Song(2, "爱的飞行日记", 1, R.drawable.jay1, 1))
+        songList.add(Song(3, "爱的飞行日记", 1, R.drawable.jay1, 1))
+        songList.add(Song(4, "爱的飞行日记", 1, R.drawable.jay1, 1))
+        songList.add(Song(5, "只因你太美", 2, R.drawable.ikun1, 1))
+        songList.add(Song(6, "Hug Me", 2, R.drawable.ikun1, 1))
+        binding.commonSongListRv.adapter = SongListAdapter(songList)
+        binding.commonSongListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 }
