@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.liaowei.music.R
+import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.IS_PLAYING
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.databinding.FragmentPlayingSongBinding
@@ -23,7 +24,6 @@ class PlayingSongFragment : Fragment() {
 
     private val binding: FragmentPlayingSongBinding by lazy { FragmentPlayingSongBinding.inflate(layoutInflater) }
     private lateinit var musicBinder: MusicService.MusicBinder
-    private var playStatus = false
     companion object {
         fun newInstance() = PlayingSongFragment()
     }
@@ -47,6 +47,11 @@ class PlayingSongFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // 获取播放状态
         val playStatus = savedInstanceState?.getBoolean("playStatus")
 
@@ -65,12 +70,11 @@ class PlayingSongFragment : Fragment() {
             }
         }
 
-        // todo: 该页面不启动服务，在songList点击音乐启动服务
+        // 该页面在视图创建之后，只需要绑定到musicService即可，无需任何播放操作
         val intent = Intent(context, MusicService::class.java).apply {
-            putExtra(PLAYING_FLAG, IS_PLAYING)
+            putExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
         }
         requireActivity().bindService(intent, mConn, BIND_AUTO_CREATE)
-        return binding.root
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -71,7 +71,7 @@ class PlayingActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun finish() {
         super.finish()
-        // overridePendingTransition(0, R.anim.playing_from_top_to_bottom)
-        overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, R.anim.playing_from_top_to_bottom)
+        overridePendingTransition(0, R.anim.playing_from_top_to_bottom)
+        // overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, R.anim.playing_from_top_to_bottom)
     }
 }

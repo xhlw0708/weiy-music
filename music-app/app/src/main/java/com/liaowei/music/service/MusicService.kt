@@ -1,12 +1,18 @@
 package com.liaowei.music.service
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.res.AssetFileDescriptor
+import android.media.MediaDataSource
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Binder
 import android.os.Build
+import android.os.Build.VERSION_CODES.P
 import android.os.IBinder
+import android.provider.MediaStore.Audio.Media
 import androidx.annotation.RequiresApi
 import com.liaowei.music.R
 import com.liaowei.music.common.constant.MusicConstant.Companion.ADD_SONG
@@ -21,7 +27,10 @@ import java.util.Queue
 class MusicService : Service() {
 
     private val binder = MusicBinder()
-    private lateinit var mediaPlayer: MediaPlayer
+
+    companion object {
+        private val mediaPlayer: MediaPlayer = MediaPlayer()
+    }
 
     // 维护一个播放队列
     private var playList: Queue<Song>? = LinkedList()
@@ -31,8 +40,8 @@ class MusicService : Service() {
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate() {
         super.onCreate()
-        mediaPlayer = MediaPlayer(baseContext)
     }
+
 
     /**
      * 1.怎么绑定的
@@ -46,6 +55,7 @@ class MusicService : Service() {
      *  3.其他地方需要用到歌曲实时的状态
      *    1.歌词、播放进度、是否正在播放......
      */
+    @SuppressLint("DiscouragedApi")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onBind(intent: Intent): IBinder {
         val type = intent.getIntExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
@@ -66,9 +76,21 @@ class MusicService : Service() {
             IS_PLAYING -> {
                 mediaPlayer.apply {
                     reset() // 重置
-                    mediaPlayer = MediaPlayer.create(baseContext, R.raw.test1)
+                    // mediaPlayer = MediaPlayer.create(baseContext, R.raw.test1)
                     mediaPlayer.start()
                     mediaPlayer.isLooping = true
+                }
+            }
+
+            else -> {
+                if (!mediaPlayer.isPlaying) {
+                    mediaPlayer.apply {
+                        val afd: AssetFileDescriptor = resources.openRawResourceFd(R.raw.test1)
+                        mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                        mediaPlayer.prepare()
+                        mediaPlayer.start()
+                        mediaPlayer.isLooping = true
+                    }
                 }
             }
         }
