@@ -125,7 +125,7 @@
                 app:drawableEndCompat="@drawable/skip_previous" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/playing_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
