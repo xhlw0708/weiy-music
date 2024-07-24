@@ -1,12 +1,15 @@
 package com.liaowei.music
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private val topTitles = listOf("推荐", "音乐馆", "我的")
 
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         initView()
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView() {
         // 添加fragment
@@ -69,7 +74,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
+        // 播放栏绑定单击事件
+        binding.mainPlayingLayout.setOnClickListener{
+            val intent = Intent(this, PlayingActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.playing_from_bottom_to_top, 0)
+            // overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.playing_from_bottom_to_top, 0)
+        }
     }
 
     private fun bindTab() {
