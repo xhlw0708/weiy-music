@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="weiy_theme_color">#5E7CE0</color>
     <color name="weiy_gray_color">#898989</color>
+    <color name="weiy_playing_color">#B3B3B3</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.liaowei.music
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         initView()
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView() {
         // 添加fragment
         val fragmentList = ArrayList<Fragment>()
@@ -53,6 +55,21 @@ class MainActivity : AppCompatActivity() {
 
         // 动态自定义Tab
         bindTab()
+
+        // 预先设置播放图案的标签为“播放”
+        binding.mainPlayingPlay.tag = R.drawable.play_circle
+        // 绑定播放按钮
+        binding.mainPlayingPlay.setOnClickListener {
+            if (binding.mainPlayingPlay.tag == R.drawable.play_circle) {
+                binding.mainPlayingPlay.setImageResource(R.drawable.pause_circle)
+                binding.mainPlayingPlay.tag = R.drawable.pause_circle
+            } else {
+                binding.mainPlayingPlay.setImageResource(R.drawable.play_circle)
+                binding.mainPlayingPlay.tag = R.drawable.play_circle
+            }
+        }
+
+
     }
 
     private fun bindTab() {
@@ -81,3 +98,4 @@ class MainActivity : AppCompatActivity() {
         })
     }
 }
+

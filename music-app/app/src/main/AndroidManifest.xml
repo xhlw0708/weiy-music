@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Musicapp"
         tools:targetApi="31">
         <activity
+            android:name=".PlayingActivity"
+            android:exported="false" />
+        <activity
             android:name=".SingerActivity"
             android:exported="false" />
         <activity

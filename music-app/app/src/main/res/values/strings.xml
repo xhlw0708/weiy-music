@@ -10,6 +10,7 @@
     <string name="content_description_like">喜欢</string>
     <string name="content_description_download">下载</string>
     <string name="content_description_mine_menu">菜单</string>
+    <string name="content_description_main_playing">播放</string>
     <string name="mine_recent_play">最近播放</string>
     <string name="more_info">更多</string>
     <string name="cover_img">封面图</string>
