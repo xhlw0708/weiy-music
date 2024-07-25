@@ -141,18 +141,18 @@ class MusicService : Service() {
     private fun nextSong() {
         mediaPlayer.reset()
         if (playList?.size!! > index + 1) {
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index + 1)?.resourceId!!)
+            index++
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             mediaPlayer.prepare()
             mediaPlayer.start()
         } else if (playList?.size!! == index + 1) {
             // 已经播放了最后一首，开始播放第一首
             index = 0
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
-            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            // val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
+            // mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             Toast.makeText(baseContext, "已经是最后一首了", Toast.LENGTH_SHORT).show()
         }
-        index++
     }
 
 

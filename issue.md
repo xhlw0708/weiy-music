@@ -25,4 +25,6 @@ fun callAddSong(){
 
 - [ ] 进入主页面，先点击播放栏会启动bindService，播放音乐，然后回到主页面，点击songList中的歌曲，会闪退报java.lang.RuntimeException: Unable to bind to service com.liaowei.music.service.MusicService@a13c77c with Intent { cmp=com.liaowei.music/.service.MusicService (has extras) }: java.lang.IllegalStateException
 
+- [ ] 播放页播放到最后一首歌的时候，按钮变为灰色不可点击，这时候，点击不了
+
 

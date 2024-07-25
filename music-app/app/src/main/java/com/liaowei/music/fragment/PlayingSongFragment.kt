@@ -26,14 +26,20 @@ import com.liaowei.music.service.MusicService
 
 class PlayingSongFragment : Fragment() {
 
-    private val binding: FragmentPlayingSongBinding by lazy { FragmentPlayingSongBinding.inflate(layoutInflater) }
+    private val binding: FragmentPlayingSongBinding by lazy {
+        FragmentPlayingSongBinding.inflate(
+            layoutInflater
+        )
+    }
     private lateinit var musicBinder: MusicService.MusicBinder
     private val handler: Handler = Handler(Looper.getMainLooper())
+
     companion object {
         fun newInstance() = PlayingSongFragment()
         val playSongViewModel: PlayingSongViewModel = PlayingSongViewModel(MutableLiveData(false))
         var bound = false
     }
+
     private val mConn: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
             musicBinder = service as MusicService.MusicBinder
@@ -55,7 +61,7 @@ class PlayingSongFragment : Fragment() {
         if (!bound) {
             val intent = Intent(context, MusicService::class.java).apply {
                 putExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
-                putExtra("song", Song(1,"周杰伦", 1L, R.drawable.jay1, R.raw.test3, 1))
+                putExtra("song", Song(1, "周杰伦", 1L, R.drawable.jay1, R.raw.test3, 1))
             }
             requireActivity().bindService(intent, mConn, BIND_AUTO_CREATE)
         }
@@ -73,34 +79,47 @@ class PlayingSongFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindPlayBtn()
         handler.postDelayed({
+            bindPlayBtn()
             if (musicBinder.callGetPlayStatus()) {
                 binding.playingBtn.setImageResource(R.drawable.pause_circle_80)
-            } else{
+            } else {
                 binding.playingBtn.setImageResource(R.drawable.play_circle_80)
             }
-        }, 500)
-        // 绑定下一首
-        binding.playingNextSongBtn.setOnClickListener {
             if (musicBinder.callGetIndex() == musicBinder.callGetPlayListSize() - 1) run {
                 setNextSongBtnState(R.drawable.skip_next_gray, false) // 切换下一首状态为不可点
-            } else{
+            }
+            if (musicBinder.callGetIndex() == 0) run {
+                setPrevSongBtnState(R.drawable.skip_previous_gray, false)
+            }
+            // 绑定下一首
+            binding.playingNextSongBtn.setOnClickListener {
+                setPrevSongBtnState(R.drawable.skip_previous, true)
                 musicBinder.callNextSong()
             }
-        }
-        // 绑定上一首
-        binding.playingPrevSongBtn.setOnClickListener{
-            setNextSongBtnState(R.drawable.skip_next, true) // 切换下一首状态为可点
+            // 绑定上一首
+            binding.playingPrevSongBtn.setOnClickListener {
+                setNextSongBtnState(R.drawable.skip_next, true) // 切换下一首状态为可点
+                musicBinder.callPreSong()
+            }
+        }, 500)
+    }
 
-            musicBinder.callPreSong()
-        }
+    // 设置上一首按钮状态
+    private fun setPrevSongBtnState(resId: Int, clickable: Boolean) {
+        binding.playingPrevSongBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            0,
+            0,
+            resId,
+            0
+        )
+        binding.playingNextSongBtn.isClickable = clickable
     }
 
     // 设置下一首按钮状态
     private fun setNextSongBtnState(resId: Int, clickable: Boolean) {
         binding.playingNextSongBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(
-             resId,
+            resId,
             0,
             0,
             0
