@@ -1,5 +1,6 @@
 package com.liaowei.music.common.fragment
 
+
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -42,7 +43,9 @@ class SongFragment : Fragment() {
         songList.add(Song(4, "爱的飞行日记", 1, R.drawable.jay1, 1, 0))
         songList.add(Song(5, "只因你太美", 2, R.drawable.ikun1, 1, 0))
         songList.add(Song(6, "Hug Me", 2, R.drawable.ikun1, 1, 0))
-        binding.commonSongListRv.adapter = SongListAdapter(songList, PageFlag.SONG_FRAGMENT)
+        binding.commonSongListRv.adapter = SongListAdapter(this, songList, PageFlag.SONG_FRAGMENT)
         binding.commonSongListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
     }
+
 }

@@ -13,6 +13,8 @@ import android.os.Build
 import android.os.Build.VERSION_CODES.P
 import android.os.IBinder
 import android.provider.MediaStore.Audio.Media
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.liaowei.music.R
 import com.liaowei.music.common.constant.MusicConstant.Companion.ADD_SONG
@@ -30,17 +32,25 @@ class MusicService : Service() {
 
     companion object {
         private val mediaPlayer: MediaPlayer = MediaPlayer()
+        private var index = 0 // 记录播放的索引
+    }
+
+    init {
+        mediaPlayer.setOnCompletionListener {
+            // 检查播放列表是否为空，为空则停止播放，并释放资源
+            if (playList?.isEmpty() == true) {
+                mediaPlayer.stop()
+            } else {
+                // 重播
+                nextSong()
+            }
+        }
     }
 
     // 维护一个播放队列
-    private var playList: Queue<Song>? = LinkedList()
+    private var playList: LinkedList<Song>? = LinkedList()
     // todo: 开一个线程一直去监听歌曲是否播放完毕和播放列表是否为空
 
-
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    override fun onCreate() {
-        super.onCreate()
-    }
 
 
     /**
@@ -59,43 +69,40 @@ class MusicService : Service() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onBind(intent: Intent): IBinder {
         val type = intent.getIntExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
+        val song = intent.getParcelableExtra("song", Song::class.java)
         when (type) {
             ADD_SONG -> {
                 // 添加歌曲
-                val song = intent.getParcelableExtra("song", Song::class.java)
                 playList?.offer(song)
                 // todo: 还要继续判断当前是否有正在播放的歌曲
             }
 
             REMOVE_SONG -> {
                 // todo: 优化，只需传递队列索引...
-                val song = intent.getParcelableExtra("song", Song::class.java)
                 playList?.remove(song)
             }
 
             IS_PLAYING -> {
                 mediaPlayer.apply {
-                    reset() // 重置
-                    // mediaPlayer = MediaPlayer.create(baseContext, R.raw.test1)
                     mediaPlayer.start()
-                    mediaPlayer.isLooping = true
                 }
             }
 
             else -> {
+                // 没有在播放，先将歌曲添加到playList中，在播放第一首歌
                 if (!mediaPlayer.isPlaying) {
-                    mediaPlayer.apply {
-                        val afd: AssetFileDescriptor = resources.openRawResourceFd(R.raw.test1)
-                        mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                        mediaPlayer.prepare()
-                        mediaPlayer.start()
-                        mediaPlayer.isLooping = true
-                    }
+                    playList?.offer(song)
+                    val afd: AssetFileDescriptor = resources.openRawResourceFd(song!!.resourceId)
+                    mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                    mediaPlayer.prepare()
+                    mediaPlayer.start()
+                    index++ // 开始的时候需要+1
+                } else{
+                    // 正在播放，只需要添加到队列即可
+                    playList?.offer(song)
                 }
             }
         }
-
-
         return binder
     }
 
@@ -103,6 +110,7 @@ class MusicService : Service() {
     override fun onUnbind(intent: Intent?): Boolean {
         playList?.clear()
         playList = null
+        mediaPlayer.release()
         return super.onUnbind(intent)
     }
 
@@ -110,25 +118,80 @@ class MusicService : Service() {
     fun getPlayStatus() = mediaPlayer.isPlaying
 
     // 添加歌曲
-    fun addSong() {}
+    fun addSong(song: Song) = playList?.push(song)
 
     // 获取歌曲信息
     fun getSong(): Song {
         TODO("return song's detail")
     }
 
+    // 重播
+    private fun restart(){
+        index = 1
+        val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(0)?.resourceId!!)
+        mediaPlayer.reset()
+        try {
+            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer.start()
+        } catch (e: Exception) {
+            Log.e("MusicService", "restart: ${e.message}", )
+        }
+    }
+
     // 下一曲
-    fun nextSong() {}
+    private fun nextSong() {
+        mediaPlayer.reset()
+        if (playList?.size!! > index) {
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
+            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+        } else if (playList?.size!! == index) {
+            // 已经播放了最后一首，开始播放第一首
+            index = 0
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(0)?.resourceId!!)
+            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            Toast.makeText(baseContext, "已经是最后一首了", Toast.LENGTH_SHORT).show()
+        }
+        index++
+    }
 
     // 上一曲
-    fun preSong() {}
+    private fun preSong() {
+        mediaPlayer.reset()
+        if (index == 1) {
+            // 正在播放第一首
+            Toast.makeText(baseContext, "已经是第一首了", Toast.LENGTH_SHORT).show()
+        }
+        if (index > 1) {
+            index--
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index - 1)?.resourceId!!)
+            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer.start()
+        }
+    }
+
 
     // 播放或暂停 todo: 传递参数 判断是播放还是暂停
-    fun startOrPause() {}
+    private fun startOrPause(isPlay: Boolean) {
+        if (isPlay) {
+            mediaPlayer.start()
+        } else {
+            mediaPlayer.pause()
+        }
+    }
 
 
     inner class MusicBinder : Binder() {
-        // 调用service中的方法
+        // 获取播放器的状态
         fun callGetPlayStatus(): Boolean = getPlayStatus()
+        // 开关播放器
+        fun callsStartOrPause(isPlay: Boolean) = startOrPause(isPlay)
+        // 添加歌曲
+        fun callAddSong(song: Song) = addSong(song)
+        // 下一曲
+        fun callNextSong() = nextSong()
+        // 上一曲
+        fun callPreSong() = preSong()
     }
 }

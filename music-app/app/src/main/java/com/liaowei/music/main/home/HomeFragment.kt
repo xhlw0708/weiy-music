@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
         songList.add(Song(6, "Hug Me", 2, com.liaowei.music.R.drawable.ikun1, 1, 0))
         songList.add(Song(6, "Hug Me", 2, com.liaowei.music.R.drawable.ikun1, 1, 0))
         // 加载“大家都在听”数据
-        binding.homeListenRv.adapter = SongListAdapter(songList, PageFlag.HOME_FRAGMENT)
+        binding.homeListenRv.adapter = SongListAdapter(this, songList, PageFlag.HOME_FRAGMENT)
         binding.homeListenRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val singerList: ArrayList<Singer> = arrayListOf(

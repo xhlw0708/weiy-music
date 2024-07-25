@@ -1,7 +1,9 @@
 package com.liaowei.music.fragment
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class PlayingSongViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+data class PlayingSongViewModel(
+    val playStatus: MutableLiveData<Boolean>
+) : ViewModel() {
 }

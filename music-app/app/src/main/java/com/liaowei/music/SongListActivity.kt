@@ -38,7 +38,7 @@ class SongListActivity : AppCompatActivity() {
 
         // 渲染数据
         val songList = intent.getParcelableArrayListExtra("songList", Song::class.java) as ArrayList<Song>
-        binding.likeRv.adapter = SongListAdapter(songList, intent.getIntExtra("flag", PageFlag.DEFAULT_SONG_LIST_ACTIVITY))
+        binding.likeRv.adapter = SongListAdapter(null, songList, intent.getIntExtra("flag", PageFlag.DEFAULT_SONG_LIST_ACTIVITY))
         binding.likeRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.songTopTitle.text = intent.getStringExtra("songTopTitle")
 
