@@ -206,5 +206,9 @@ class MusicService : Service() {
         fun callIsLastSong(): Boolean = index + 1 == playList?.size
         // 是否第一首
         fun callIsFirstSong(): Boolean = index == 0
+        // 获取播放列表长度
+        fun callGetPlayListSize(): Int = playList?.size!!
+        // 获取当前索引
+        fun callGetIndex(): Int = index
     }
 }

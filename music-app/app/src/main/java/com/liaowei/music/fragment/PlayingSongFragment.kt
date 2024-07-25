@@ -83,16 +83,29 @@ class PlayingSongFragment : Fragment() {
         }, 500)
         // 绑定下一首
         binding.playingNextSongBtn.setOnClickListener {
-            if (musicBinder.callIsLastSong()) {
-                // TODO: 更新按钮,不能播放下一首
-
+            if (musicBinder.callGetIndex() == musicBinder.callGetPlayListSize() - 1) run {
+                setNextSongBtnState(R.drawable.skip_next_gray, false) // 切换下一首状态为不可点
+            } else{
+                musicBinder.callNextSong()
             }
-            musicBinder.callNextSong()
         }
         // 绑定上一首
         binding.playingPrevSongBtn.setOnClickListener{
+            setNextSongBtnState(R.drawable.skip_next, true) // 切换下一首状态为可点
+
             musicBinder.callPreSong()
         }
+    }
+
+    // 设置下一首按钮状态
+    private fun setNextSongBtnState(resId: Int, clickable: Boolean) {
+        binding.playingNextSongBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(
+             resId,
+            0,
+            0,
+            0
+        )
+        binding.playingNextSongBtn.isClickable = clickable
     }
 
     // 绑定播放按钮
