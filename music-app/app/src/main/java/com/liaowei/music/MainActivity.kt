@@ -41,6 +41,7 @@ import com.liaowei.music.main.home.HomeFragment
 import com.liaowei.music.main.mine.MineFragment
 import com.liaowei.music.main.model.Song
 import com.liaowei.music.service.MusicService
+import java.util.Random
 
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +55,9 @@ class MainActivity : AppCompatActivity() {
     private val tabTitles = listOf("首页", "乐馆", "我的")
     private val topTitles = listOf("推荐", "音乐馆", "我的")
     private lateinit var localBroadcastManager: LocalBroadcastManager
+    private val res: IntArray = intArrayOf(R.raw.test1, R.raw.test4)
+    private val random: Random = Random(2)
+
     private val handler = @SuppressLint("HandlerLeak") object: Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -70,12 +74,12 @@ class MainActivity : AppCompatActivity() {
             if (!bound) {
                 val intent = Intent(this@MainActivity, MusicService::class.java).apply {
                     putExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
-                    putExtra("song", Song(1, name!!, msg.data.getLong("singer"), img, R.raw.test3, 1))
+                    putExtra("song", Song(1, name!!, msg.data.getLong("singer"), img, res[random.nextInt(2)], 1))
                 }
                 bindService(intent, mConn, BIND_AUTO_CREATE)
             } else{
                 // 绑定过了就添加歌曲
-                musicBinder.callAddSong(Song(1, name!!, msg.data.getLong("singer"), img, R.raw.test3, 1))
+                musicBinder.callAddSong(Song(1, name!!, msg.data.getLong("singer"), img, res[random.nextInt(2)], 1))
             }
         }
     }

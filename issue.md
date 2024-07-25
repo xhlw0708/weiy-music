@@ -11,3 +11,18 @@
 - [ ] 播放界面，反复点击播放按钮，退出到主页面，再次进入播放页面会出现不能绑定服务的异常
 
 - [ ] 总结一篇笔记
+
+- [ ] 添加音乐到列表时，添加不成功原因：kt方法定义为
+
+```kotlin
+// 调用service中的addSong()方法，这样写只是赋值，并不能直接调用方法
+fun callAddSong() = addSong()
+// 改正
+fun callAddSong(){
+    addSong()
+}
+```
+
+- [ ] 进入主页面，先点击播放栏会启动bindService，播放音乐，然后回到主页面，点击songList中的歌曲，会闪退报java.lang.RuntimeException: Unable to bind to service com.liaowei.music.service.MusicService@a13c77c with Intent { cmp=com.liaowei.music/.service.MusicService (has extras) }: java.lang.IllegalStateException
+
+

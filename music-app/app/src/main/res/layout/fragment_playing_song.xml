@@ -118,7 +118,7 @@
             android:layout_marginBottom="20dp">
 
             <TextView
-                android:id="@+id/imageView9"
+                android:id="@+id/playing_prev_song_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -132,11 +132,11 @@
                 app:srcCompat="@drawable/play_circle_80" />
 
             <TextView
-                android:id="@+id/imageView10"
+                android:id="@+id/playing_next_song_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/skip_next" />
+                app:drawableStartCompat="@drawable/skip_next" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

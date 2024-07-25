@@ -81,6 +81,18 @@ class PlayingSongFragment : Fragment() {
                 binding.playingBtn.setImageResource(R.drawable.play_circle_80)
             }
         }, 500)
+        // 绑定下一首
+        binding.playingNextSongBtn.setOnClickListener {
+            if (musicBinder.callIsLastSong()) {
+                // TODO: 更新按钮,不能播放下一首
+
+            }
+            musicBinder.callNextSong()
+        }
+        // 绑定上一首
+        binding.playingPrevSongBtn.setOnClickListener{
+            musicBinder.callPreSong()
+        }
     }
 
     // 绑定播放按钮

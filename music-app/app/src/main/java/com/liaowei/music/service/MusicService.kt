@@ -40,8 +40,9 @@ class MusicService : Service() {
             // 检查播放列表是否为空，为空则停止播放，并释放资源
             if (playList?.isEmpty() == true) {
                 mediaPlayer.stop()
+                // todo： 让底部播放栏停止播放，播放页面设置暂停按钮
             } else {
-                // 重播
+                // 下一首
                 nextSong()
             }
         }
@@ -89,17 +90,16 @@ class MusicService : Service() {
             }
 
             else -> {
-                // 没有在播放，先将歌曲添加到playList中，在播放第一首歌
+                // 没有在播放，先将歌曲添加到playList中，再播放第一首歌
                 if (!mediaPlayer.isPlaying) {
-                    playList?.offer(song)
+                    playList?.push(song)
                     val afd: AssetFileDescriptor = resources.openRawResourceFd(song!!.resourceId)
                     mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
                     mediaPlayer.prepare()
                     mediaPlayer.start()
-                    index++ // 开始的时候需要+1
                 } else{
                     // 正在播放，只需要添加到队列即可
-                    playList?.offer(song)
+                    playList?.push(song)
                 }
             }
         }
@@ -118,61 +118,62 @@ class MusicService : Service() {
     fun getPlayStatus() = mediaPlayer.isPlaying
 
     // 添加歌曲
-    fun addSong(song: Song) = playList?.push(song)
+    fun addSong(song: Song) {
+        playList?.push(song)
+        index = 0
+        // 播放歌曲
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+            mediaPlayer.reset()
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(song.resourceId)
+            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer.prepare()
+        }
+        startOrPause(true)
+    }
 
     // 获取歌曲信息
     fun getSong(): Song {
         TODO("return song's detail")
     }
 
-    // 重播
-    private fun restart(){
-        index = 1
-        val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(0)?.resourceId!!)
-        mediaPlayer.reset()
-        try {
-            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-            mediaPlayer.start()
-        } catch (e: Exception) {
-            Log.e("MusicService", "restart: ${e.message}", )
-        }
-    }
-
     // 下一曲
     private fun nextSong() {
         mediaPlayer.reset()
-        if (playList?.size!! > index) {
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
+        if (playList?.size!! > index + 1) {
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index + 1)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             mediaPlayer.prepare()
             mediaPlayer.start()
-        } else if (playList?.size!! == index) {
+        } else if (playList?.size!! == index + 1) {
             // 已经播放了最后一首，开始播放第一首
             index = 0
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(0)?.resourceId!!)
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             Toast.makeText(baseContext, "已经是最后一首了", Toast.LENGTH_SHORT).show()
         }
         index++
     }
 
+
     // 上一曲
     private fun preSong() {
         mediaPlayer.reset()
-        if (index == 1) {
+        if (index == 0) {
             // 正在播放第一首
             Toast.makeText(baseContext, "已经是第一首了", Toast.LENGTH_SHORT).show()
         }
-        if (index > 1) {
+        if (index > 0) {
             index--
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index - 1)?.resourceId!!)
+            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer.prepare()
             mediaPlayer.start()
         }
     }
 
 
-    // 播放或暂停 todo: 传递参数 判断是播放还是暂停
+    // 播放或暂停
     private fun startOrPause(isPlay: Boolean) {
         if (isPlay) {
             mediaPlayer.start()
@@ -186,12 +187,24 @@ class MusicService : Service() {
         // 获取播放器的状态
         fun callGetPlayStatus(): Boolean = getPlayStatus()
         // 开关播放器
-        fun callsStartOrPause(isPlay: Boolean) = startOrPause(isPlay)
+        fun callsStartOrPause(isPlay: Boolean){
+            startOrPause(isPlay)
+        }
         // 添加歌曲
-        fun callAddSong(song: Song) = addSong(song)
+        fun callAddSong(song: Song){
+            addSong(song)
+        }
         // 下一曲
-        fun callNextSong() = nextSong()
+        fun callNextSong(){
+            nextSong()
+        }
         // 上一曲
-        fun callPreSong() = preSong()
+        fun callPreSong(){
+            preSong()
+        }
+        // 是否最后一首
+        fun callIsLastSong(): Boolean = index + 1 == playList?.size
+        // 是否第一首
+        fun callIsFirstSong(): Boolean = index == 0
     }
 }
