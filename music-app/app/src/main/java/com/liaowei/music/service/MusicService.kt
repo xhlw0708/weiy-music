@@ -139,8 +139,8 @@ class MusicService : Service() {
 
     // 下一曲
     private fun nextSong() {
-        mediaPlayer.reset()
         if (playList?.size!! > index + 1) {
+            mediaPlayer.reset()
             index++
             val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
@@ -148,7 +148,7 @@ class MusicService : Service() {
             mediaPlayer.start()
         } else if (playList?.size!! == index + 1) {
             // 已经播放了最后一首，开始播放第一首
-            index = 0
+            // index = 0
             // val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             // mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             Toast.makeText(baseContext, "已经是最后一首了", Toast.LENGTH_SHORT).show()
@@ -158,12 +158,12 @@ class MusicService : Service() {
 
     // 上一曲
     private fun preSong() {
-        mediaPlayer.reset()
         if (index == 0) {
             // 正在播放第一首
             Toast.makeText(baseContext, "已经是第一首了", Toast.LENGTH_SHORT).show()
         }
         if (index > 0) {
+            mediaPlayer.reset()
             index--
             val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)

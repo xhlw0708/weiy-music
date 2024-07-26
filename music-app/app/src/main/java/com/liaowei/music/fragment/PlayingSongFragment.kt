@@ -80,27 +80,31 @@ class PlayingSongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handler.postDelayed({
+            // 绑定播放按钮单击事件
             bindPlayBtn()
+
+            // 进入页面初始化播放按钮
             if (musicBinder.callGetPlayStatus()) {
                 binding.playingBtn.setImageResource(R.drawable.pause_circle_80)
             } else {
                 binding.playingBtn.setImageResource(R.drawable.play_circle_80)
             }
-            if (musicBinder.callGetIndex() == musicBinder.callGetPlayListSize() - 1) run {
-                setNextSongBtnState(R.drawable.skip_next_gray, false) // 切换下一首状态为不可点
-            }
-            if (musicBinder.callGetIndex() == 0) run {
-                setPrevSongBtnState(R.drawable.skip_previous_gray, false)
-            }
+
             // 绑定下一首
             binding.playingNextSongBtn.setOnClickListener {
-                setPrevSongBtnState(R.drawable.skip_previous, true)
                 musicBinder.callNextSong()
+                if (musicBinder.callGetIndex() == musicBinder.callGetPlayListSize() - 1) run {
+                    setNextSongBtnState(R.drawable.skip_next_gray, false) // 切换下一首状态为不可点
+                }
+                setPrevSongBtnState(R.drawable.skip_previous, true)
             }
             // 绑定上一首
             binding.playingPrevSongBtn.setOnClickListener {
-                setNextSongBtnState(R.drawable.skip_next, true) // 切换下一首状态为可点
                 musicBinder.callPreSong()
+                if (musicBinder.callGetIndex() == 0) run {
+                    setPrevSongBtnState(R.drawable.skip_previous_gray, false)
+                }
+                setNextSongBtnState(R.drawable.skip_next, true) // 切换下一首状态为可点
             }
         }, 500)
     }
