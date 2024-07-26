@@ -46,6 +46,7 @@ class PlayingActivity : AppCompatActivity() {
         binding.playingBack.setOnClickListener { finish() }
         val fragments: List<Fragment> =
             listOf(PlayingSongFragment.newInstance(), PlayingLyricFragment.newInstance())
+
         binding.playingViewPager.adapter = PlayingAdapter(this, fragments)
         // 切换页面更换上标题
         binding.playingViewPager.registerOnPageChangeCallback(object :

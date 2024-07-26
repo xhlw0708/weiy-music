@@ -1,6 +1,8 @@
 package com.liaowei.music.fragment
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
+import android.content.Context
 import android.content.Context.BIND_AUTO_CREATE
 import android.content.Intent
 import android.content.ServiceConnection
@@ -10,12 +12,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.os.Message
+import android.os.Messenger
+import android.os.Parcel
+import android.os.Parcelable
 import android.provider.MediaStore.Audio.Media
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import com.liaowei.music.MainActivity.Companion.bound
 import com.liaowei.music.R
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.IS_PLAYING
@@ -24,22 +32,20 @@ import com.liaowei.music.databinding.FragmentPlayingSongBinding
 import com.liaowei.music.main.model.Song
 import com.liaowei.music.service.MusicService
 
-class PlayingSongFragment : Fragment() {
+class PlayingSongFragmentBak : Fragment() {
 
     private val binding: FragmentPlayingSongBinding by lazy {
         FragmentPlayingSongBinding.inflate(
             layoutInflater
         )
     }
-    private lateinit var musicBinder: MusicService.MusicBinder
-    private val handler: Handler = Handler(Looper.getMainLooper())
-
     companion object {
-        fun newInstance() = PlayingSongFragment()
+        fun newInstance() = PlayingSongFragmentBak()
         val playSongViewModel: PlayingSongViewModel = PlayingSongViewModel(MutableLiveData(false))
         var bound = false
     }
-
+    private lateinit var musicBinder: MusicService.MusicBinder
+    private val initHandler: Handler = Handler(Looper.getMainLooper())
     private val mConn: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, service: IBinder?) {
             musicBinder = service as MusicService.MusicBinder
@@ -50,7 +56,19 @@ class PlayingSongFragment : Fragment() {
             bound = false
         }
     }
-    private val viewModel: PlayingSongViewModel by viewModels()
+    private val updateBarHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            val duration = msg.arg1 // 总时长
+            val position = msg.arg2 // 当前播放进度
+            // 更新进度条
+            // 更新进度条
+            binding.progressBar.max = duration
+            binding.progressBar.progress = position
+        }
+    }
+
+    fun getUpdateBarHandler() = updateBarHandler
 
 
     override fun onCreateView(
@@ -79,7 +97,7 @@ class PlayingSongFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        handler.postDelayed({
+        initHandler.postDelayed({
             // 绑定播放按钮单击事件
             bindPlayBtn()
 
