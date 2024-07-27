@@ -172,7 +172,6 @@ class MainActivity : AppCompatActivity() {
 
 
     inner class MyConn: ServiceConnection {
-
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             musicBinder = service as MusicService.MusicBinder
             bound = true

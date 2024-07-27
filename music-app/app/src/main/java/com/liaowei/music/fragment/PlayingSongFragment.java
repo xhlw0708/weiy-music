@@ -43,15 +43,8 @@ public class PlayingSongFragment extends Fragment {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             musicBinder = (MusicService.MusicBinder) service;
-            mService = new Messenger(musicBinder);
+            mService = new Messenger(service);
             bound = true;
-            try {
-                Message clientMsg = Message.obtain(null, MusicService.GET_SONG_STATE_MSG);
-                clientMsg.replyTo = receiverReplyMsg;
-                mService.send(clientMsg);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -114,6 +107,15 @@ public class PlayingSongFragment extends Fragment {
         initHandler.postDelayed(() -> {
             // 绑定播放按钮单击事件
             bindPlayBtn();
+
+            // 获取歌曲进度
+            try {
+                Message clientMsg = Message.obtain(null, MusicService.GET_SONG_STATE_MSG);
+                clientMsg.replyTo = receiverReplyMsg;
+                mService.send(clientMsg);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
 
             // 监听播放进度
             // musicBinder.callIsPlaying(true);

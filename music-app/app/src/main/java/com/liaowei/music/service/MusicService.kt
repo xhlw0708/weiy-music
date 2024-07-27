@@ -42,13 +42,6 @@ class MusicService : Service() {
         private var index = 0 // 记录播放的索引
         private var isThreadListen = false
         const val GET_SONG_STATE_MSG = 1 // 获取歌曲时长和播放进度
-        const val GET_PLAY_STATUS = 2 // 获取播放状态
-        const val ADD_SONG = 3 // 添加歌曲
-        const val NEXT_SONG = 4 // 下一首
-        const val PRE_SONG = 5 // 上一首
-        const val START_OR_PAUSE = 6 // 播放或暂停
-        const val GET_PLAY_LIST_SIZE = 7 // 获取播放列表的大小
-        const val GET_INDEX = 8 // 获取当前播放歌曲的索引
     }
 
     // 开一个线程一直去监听发送歌曲的时长和播放进度
@@ -153,7 +146,7 @@ class MusicService : Service() {
                 }
             }
         }
-        return messenger.binder
+        return binder
     }
 
 

@@ -36,5 +36,3 @@ fun callAddSong(){
   在老师的帮助下发现原因：service中是new的fragment中的handler，不会走生命周期，使用messenger进行通信，发送fragment的handler
 
 - [ ] 
-
-
