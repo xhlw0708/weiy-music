@@ -1,6 +1,7 @@
 package com.liaowei.music.fragment;
 
 import static com.liaowei.music.common.constant.MusicConstant.DEFAULT_MUSIC_TYPE;
+import static com.liaowei.music.service.MusicService.GET_SONG_STATE_MSG;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.liaowei.music.R;
 import com.liaowei.music.databinding.FragmentPlayingSongBinding;
@@ -34,26 +37,26 @@ public class PlayingSongFragment extends Fragment {
 
     private FragmentPlayingSongBinding binding;
     private static boolean bound = false;
-    private PlayingSongViewModel playSongViewModel = new PlayingSongViewModel(new MutableLiveData<>(false));
+    private static boolean progress = false;
     private MusicService.MusicBinder musicBinder;
+    private MusicService musicService;
     private Handler initHandler = new Handler(Looper.getMainLooper());
-    private Messenger mService;
-    private Messenger receiverReplyMsg = new Messenger(new UpdateProgressBarHandler(Looper.getMainLooper()));
+    private Messenger serviceMessenger;
+    private Messenger clentMessenger = new Messenger(new UpdateProgressBarHandler(Looper.getMainLooper()));
     private final ServiceConnection mConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             musicBinder = (MusicService.MusicBinder) service;
-            mService = new Messenger(service);
+            serviceMessenger = new Messenger(service);
             bound = true;
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
             musicBinder = null;
-            mService = null;
+            serviceMessenger = null;
             bound = false;
         }
     };
-
 
     class UpdateProgressBarHandler extends Handler {
         public UpdateProgressBarHandler(@NonNull Looper looper) {
@@ -63,7 +66,7 @@ public class PlayingSongFragment extends Fragment {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if (msg.what == MusicService.GET_SONG_STATE_MSG) {
+            if (msg.what == MusicService.SEND_SONG_STATE_MSG) {
                 int duration = msg.arg1; // 总时长
                 int position = msg.arg2; // 当前播放进度
                 // 更新进度条
@@ -103,19 +106,29 @@ public class PlayingSongFragment extends Fragment {
             intent.putExtra("PLAYING_FLAG", DEFAULT_MUSIC_TYPE);
             intent.putExtra("song", new Song(1, "周杰伦", 1L, R.drawable.jay1, R.raw.test3, 1, 1));
             requireActivity().bindService(intent, mConn, Context.BIND_AUTO_CREATE);
+            progress = true;
         }
         initHandler.postDelayed(() -> {
-            // 绑定播放按钮单击事件
-            bindPlayBtn();
-
             // 获取歌曲进度
-            try {
-                Message clientMsg = Message.obtain(null, MusicService.GET_SONG_STATE_MSG);
-                clientMsg.replyTo = receiverReplyMsg;
-                mService.send(clientMsg);
+            /*try {
+                Message clientMsg = Message.obtain(null, GET_SONG_STATE_MSG);
+                clientMsg.replyTo = clentMessenger;
+                serviceMessenger.send(clientMsg);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
+            }*/
+
+            if (progress) {
+                new Thread(() -> {
+                    int duration = musicBinder.callGetDuration();
+                    int position = musicBinder.callGetPosition();
+                    binding.progressBar.setMax(duration);
+                    binding.progressBar.setProgress(position);
+                }).start();
             }
+
+            // 绑定播放按钮单击事件
+            bindPlayBtn();
 
             // 监听播放进度
             // musicBinder.callIsPlaying(true);
@@ -143,7 +156,14 @@ public class PlayingSongFragment extends Fragment {
                 }
                 setNextSongBtnState(R.drawable.skip_next, true); // 切换下一首状态为可点
             });
-        }, 500);
+        }, 200);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("duration", musicBinder.callGetDuration());
+        outState.putInt("position", musicBinder.callGetPosition());
     }
 
     // 设置上一首按钮状态

@@ -41,7 +41,7 @@ class PlayingSongFragmentBak : Fragment() {
     }
     companion object {
         fun newInstance() = PlayingSongFragmentBak()
-        val playSongViewModel: PlayingSongViewModel = PlayingSongViewModel(MutableLiveData(false))
+        // val playSongViewModel: PlayingSongViewModel = PlayingSongViewModel(MutableLiveData(false))
         var bound = false
     }
     private lateinit var musicBinder: MusicService.MusicBinder

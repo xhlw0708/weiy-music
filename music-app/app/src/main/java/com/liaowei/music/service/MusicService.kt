@@ -2,36 +2,26 @@ package com.liaowei.music.service
 
 import android.annotation.SuppressLint
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.res.AssetFileDescriptor
-import android.media.MediaDataSource
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Binder
 import android.os.Build
-import android.os.Build.VERSION_CODES.P
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.os.Message
 import android.os.Messenger
-import android.provider.MediaStore.Audio.Media
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide.init
-import com.liaowei.music.R
 import com.liaowei.music.common.constant.MusicConstant.Companion.ADD_SONG
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.IS_PLAYING
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.common.constant.MusicConstant.Companion.REMOVE_SONG
-import com.liaowei.music.fragment.PlayingSongFragment
 import com.liaowei.music.main.model.Song
 import java.util.LinkedList
-import java.util.Queue
 
 class MusicService : Service() {
 
@@ -42,6 +32,7 @@ class MusicService : Service() {
         private var index = 0 // 记录播放的索引
         private var isThreadListen = false
         const val GET_SONG_STATE_MSG = 1 // 获取歌曲时长和播放进度
+        const val SEND_SONG_STATE_MSG = 2 // 发送给客户端消息
     }
 
     // 开一个线程一直去监听发送歌曲的时长和播放进度
@@ -55,18 +46,17 @@ class MusicService : Service() {
             Thread.sleep(200)
         }
     }
-    private val inComingBarHandler: Handler = object : Handler(Looper.getMainLooper()) {
+
+    private val serviceHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
+            Log.d("TAG", "onServiceConnected: ReceiveMSG")
             when(msg.what) {
                 GET_SONG_STATE_MSG -> {
-                    val client: Messenger = msg.replyTo
-                    val replyMsg = Message.obtain().apply {
-                        what = GET_SONG_STATE_MSG
-                        arg1 = mediaPlayer.duration // 总时长
-                        arg2 = mediaPlayer.currentPosition // 播放进度
-                        replyTo = messenger
-                    }
-                    client.send(replyMsg)
+                    clientMessenger = msg.replyTo
+                    val replyMsg = Message.obtain(null, SEND_SONG_STATE_MSG)
+                    replyMsg.arg1 = mediaPlayer.duration // 总时长
+                    replyMsg.arg2 = mediaPlayer.currentPosition // 播放进度
+                    clientMessenger.send(replyMsg)
                 }
                 else -> {
                     super.handleMessage(msg)
@@ -74,7 +64,8 @@ class MusicService : Service() {
             }
         }
     }
-    private val messenger: Messenger = Messenger(inComingBarHandler)
+    private val serviceMessenger: Messenger = Messenger(serviceHandler)
+    private lateinit var clientMessenger: Messenger
 
 
     init {
@@ -147,6 +138,7 @@ class MusicService : Service() {
             }
         }
         return binder
+        // return serviceMessenger.binder
     }
 
 
@@ -226,7 +218,9 @@ class MusicService : Service() {
     }
 
 
-    inner class MusicBinder : Binder() {
+    inner class MusicBinder : Binder(){
+
+
         // 获取播放器的状态
         fun callGetPlayStatus(): Boolean = getPlayStatus()
         // 开关播放器
@@ -258,5 +252,10 @@ class MusicService : Service() {
             // isThreadListen = isPlaying
             // Thread(updateProgressBarTask).start()
         }
+        // 获取播放时长
+        fun callGetDuration(): Int = mediaPlayer.duration
+        // 获取播放进度
+        fun callGetPosition(): Int = mediaPlayer.currentPosition
+
     }
 }
