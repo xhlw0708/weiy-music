@@ -115,14 +115,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/cover_img"
-            android:src="@drawable/jay1" />
+            android:src="@drawable/music_video" />
 
         <TextView
             android:id="@+id/main_playing_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="说好的幸福呢-周杰伦" />
+            android:text="@string/main_playing_tab_content" />
 
         <ImageView
             android:id="@+id/main_playing_play"

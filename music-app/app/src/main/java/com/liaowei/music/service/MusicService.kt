@@ -20,44 +20,39 @@ import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_T
 import com.liaowei.music.common.constant.MusicConstant.Companion.IS_PLAYING
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.common.constant.MusicConstant.Companion.REMOVE_SONG
+import com.liaowei.music.fragment.PlayingSongFragment
 import com.liaowei.music.main.model.Song
 import java.util.LinkedList
+import java.util.Timer
+import java.util.TimerTask
 
 class MusicService : Service() {
 
-    private val binder = MusicBinder()
+    private val binder = MusicBinder(this)
 
     companion object {
         private val mediaPlayer: MediaPlayer = MediaPlayer()
         private var index = 0 // 记录播放的索引
-        private var isThreadListen = false
         const val GET_SONG_STATE_MSG = 1 // 获取歌曲时长和播放进度
         const val SEND_SONG_STATE_MSG = 2 // 发送给客户端消息
     }
 
-    // 开一个线程一直去监听发送歌曲的时长和播放进度
-    private val updateProgressBarTask: Runnable = Runnable {
-        while (isThreadListen && mediaPlayer.isPlaying){
-            val message = Message.obtain().apply {
-                arg1 = mediaPlayer.duration // 总时长
-                arg2 = mediaPlayer.currentPosition // 播放进度
-            }
-            // updateProgressBarHandler.handleMessage(message)
-            Thread.sleep(200)
-        }
+    // 开一个线程播放音乐
+    private val playingMusicTask: Runnable = Runnable {
+        startOrPause(true)
     }
 
     private val serviceHandler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            Log.d("TAG", "onServiceConnected: ReceiveMSG")
-            when(msg.what) {
+            when (msg.what) {
                 GET_SONG_STATE_MSG -> {
                     clientMessenger = msg.replyTo
                     val replyMsg = Message.obtain(null, SEND_SONG_STATE_MSG)
                     replyMsg.arg1 = mediaPlayer.duration // 总时长
-                    replyMsg.arg2 = mediaPlayer.currentPosition // 播放进度
+                    // replyMsg.arg2 = mediaPlayer.currentPosition // 播放进度
                     clientMessenger.send(replyMsg)
                 }
+
                 else -> {
                     super.handleMessage(msg)
                 }
@@ -83,7 +78,7 @@ class MusicService : Service() {
 
     // 维护一个播放队列
     private var playList: LinkedList<Song>? = LinkedList()
-
+    var timer: Timer? = null
 
     /**
      * 1.怎么绑定的
@@ -130,7 +125,6 @@ class MusicService : Service() {
                     mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
                     mediaPlayer.prepare()
                     startOrPause(true)
-
                 } else{
                     // 正在播放，只需要添加到队列即可
                     playList?.push(song)
@@ -141,6 +135,9 @@ class MusicService : Service() {
         // return serviceMessenger.binder
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
     override fun onUnbind(intent: Intent?): Boolean {
         playList?.clear()
@@ -149,8 +146,17 @@ class MusicService : Service() {
         return super.onUnbind(intent)
     }
 
+    // 异步播放音乐
+    fun playAsync() {
+        // Thread(playingMusicTask).start()
+        startOrPause(true)
+    }
+
     // 返回播放状态
     fun getPlayStatus() = mediaPlayer.isPlaying
+
+    // 获取mediaPlayer
+    fun getMediaPlayer() = mediaPlayer
 
     // 添加歌曲
     fun addSong(song: Song) {
@@ -162,9 +168,14 @@ class MusicService : Service() {
             mediaPlayer.reset()
             val afd: AssetFileDescriptor = resources.openRawResourceFd(song.resourceId)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-            mediaPlayer.prepare()
+            // mediaPlayer.prepare()
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener {
+                playAsync()
+            }
         }
-        startOrPause(true)
+        // startOrPause(true)
+        playAsync()
     }
 
     // 获取歌曲信息
@@ -173,14 +184,21 @@ class MusicService : Service() {
     }
 
     // 下一曲
-    private fun nextSong() {
+    fun nextSong() {
         if (playList?.size!! > index + 1) {
             mediaPlayer.reset()
             index++
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
+            val afd: AssetFileDescriptor =
+                resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             mediaPlayer.prepare()
-            mediaPlayer.start()
+            startOrPause(true)
+
+            /*val handler: Handler = PlayingSongFragment.newInstance().initHandler
+            val message = Message.obtain(handler, GET_SONG_STATE_MSG)
+            message.arg1 = mediaPlayer.duration
+            message.arg2 = mediaPlayer.currentPosition
+            message.sendToTarget()*/
         } else if (playList?.size!! == index + 1) {
             // 已经播放了最后一首，开始播放第一首
             // index = 0
@@ -192,7 +210,7 @@ class MusicService : Service() {
 
 
     // 上一曲
-    private fun preSong() {
+    fun preSong() {
         if (index == 0) {
             // 正在播放第一首
             Toast.makeText(baseContext, "已经是第一首了", Toast.LENGTH_SHORT).show()
@@ -200,16 +218,17 @@ class MusicService : Service() {
         if (index > 0) {
             mediaPlayer.reset()
             index--
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
+            val afd: AssetFileDescriptor =
+                resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
             mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
             mediaPlayer.prepare()
-            mediaPlayer.start()
+            // mediaPlayer.start()
+            playAsync()
         }
     }
 
-
     // 播放或暂停
-    private fun startOrPause(isPlay: Boolean) {
+    fun startOrPause(isPlay: Boolean) {
         if (isPlay) {
             mediaPlayer.start()
         } else {
@@ -217,45 +236,28 @@ class MusicService : Service() {
         }
     }
 
+    // 获取播放时长
+    fun getDuration(): Int = mediaPlayer.duration
 
-    inner class MusicBinder : Binder(){
+    // 获取播放进度
+    fun getPosition(): Int = mediaPlayer.currentPosition
+
+    // 更新音乐进度
+    fun updateProgress(position: Int) {
+        mediaPlayer.seekTo(position)
+        if (!mediaPlayer.isPlaying) {
+            startOrPause(true)
+        }
+    }
+
+    // 获取当前索引
+    fun getIndex(): Int = index
+
+    // 获取播放列表长度
+    fun getPlayListSize(): Int = playList?.size!!
 
 
-        // 获取播放器的状态
-        fun callGetPlayStatus(): Boolean = getPlayStatus()
-        // 开关播放器
-        fun callsStartOrPause(isPlay: Boolean){
-            startOrPause(isPlay)
-        }
-        // 添加歌曲
-        fun callAddSong(song: Song){
-            addSong(song)
-        }
-        // 下一曲
-        fun callNextSong(){
-            nextSong()
-        }
-        // 上一曲
-        fun callPreSong(){
-            preSong()
-        }
-        // 是否最后一首
-        fun callIsLastSong(): Boolean = index + 1 == playList?.size
-        // 是否第一首
-        fun callIsFirstSong(): Boolean = index == 0
-        // 获取播放列表长度
-        fun callGetPlayListSize(): Int = playList?.size!!
-        // 获取当前索引
-        fun callGetIndex(): Int = index
-        // 是否监听歌曲播放进度
-        fun callIsPlaying(isPlaying: Boolean) {
-            // isThreadListen = isPlaying
-            // Thread(updateProgressBarTask).start()
-        }
-        // 获取播放时长
-        fun callGetDuration(): Int = mediaPlayer.duration
-        // 获取播放进度
-        fun callGetPosition(): Int = mediaPlayer.currentPosition
-
+    inner class MusicBinder(private val service: MusicService) : Binder() {
+        fun getService(): MusicService = service
     }
 }

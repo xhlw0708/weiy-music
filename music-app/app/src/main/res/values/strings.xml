@@ -15,4 +15,5 @@
     <string name="more_info">更多</string>
     <string name="cover_img">封面图</string>
     <string name="song_separator">·</string>
+    <string name="main_playing_tab_content">请选择音乐</string>
 </resources>

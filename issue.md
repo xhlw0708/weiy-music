@@ -33,6 +33,8 @@ fun callAddSong(){
   
   java.lang.IllegalStateException: onGetLayoutInflater() cannot be executed until the Fragment is attached to the FragmentManager.
   
-  在老师的帮助下发现原因：service中是new的fragment中的handler，不会走生命周期，使用messenger进行通信，发送fragment的handler
+  发现原因：service中是new的fragment中的handler，不会走生命周期，使用messenger进行通信，发送fragment的handler
+  
+  尝试保留自定义的binder并使用messenger通信，但是不会发送消息。故采用在客户端开启线程一直循环获取播放进度再刷新进度条。bug：在播放页，点击暂停按钮，再退出界面，会一直卡顿。
 
 - [ ] 

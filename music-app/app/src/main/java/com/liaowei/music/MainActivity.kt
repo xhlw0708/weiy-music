@@ -50,8 +50,10 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var bound = false
     }
+
     private lateinit var musicBinder: MusicService.MusicBinder
     private val mConn = MyConn()
+    private lateinit var musicService: MusicService
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val tabTitles = listOf("首页", "乐馆", "我的")
     private val topTitles = listOf("推荐", "音乐馆", "我的")
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private val res: IntArray = intArrayOf(R.raw.test1, R.raw.test4)
     private val random: Random = Random(2)
 
-    private val handler = @SuppressLint("HandlerLeak") object: Handler(Looper.getMainLooper()) {
+    private val handler = @SuppressLint("HandlerLeak") object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             // 更改播放栏UI
@@ -75,12 +77,24 @@ class MainActivity : AppCompatActivity() {
             if (!bound) {
                 val intent = Intent(this@MainActivity, MusicService::class.java).apply {
                     putExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
-                    putExtra("song", Song(1, name!!, msg.data.getLong("singer"), img, res[random.nextInt(2)], 1))
+                    putExtra(
+                        "song",
+                        Song(1, name!!, msg.data.getLong("singer"), img, R.raw.test1, 1)
+                    )
                 }
                 bindService(intent, mConn, BIND_AUTO_CREATE)
-            } else{
+            } else {
                 // 绑定过了就添加歌曲
-                musicBinder.callAddSong(Song(1, name!!, msg.data.getLong("singer"), img, res[random.nextInt(2)], 1))
+                musicService.addSong(
+                    Song(
+                        1,
+                        name!!,
+                        msg.data.getLong("singer"),
+                        img,
+                        res[random.nextInt(2)],
+                        1
+                    )
+                )
             }
         }
     }
@@ -125,23 +139,31 @@ class MainActivity : AppCompatActivity() {
 
         // 预先设置播放图案的标签为“播放”
         binding.mainPlayingPlay.tag = R.drawable.play_circle
+
         // 绑定播放按钮
         binding.mainPlayingPlay.setOnClickListener {
             if (binding.mainPlayingPlay.tag == R.drawable.play_circle) {
                 binding.mainPlayingPlay.setImageResource(R.drawable.pause_circle)
                 binding.mainPlayingPlay.tag = R.drawable.pause_circle
+                musicService.startOrPause(true)
+                musicService.playAsync()
             } else {
                 binding.mainPlayingPlay.setImageResource(R.drawable.play_circle)
                 binding.mainPlayingPlay.tag = R.drawable.play_circle
+                musicService.startOrPause(false)
             }
         }
 
         // 播放栏绑定单击事件
-        binding.mainPlayingLayout.setOnClickListener{
-            val intent = Intent(this, PlayingActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.anim.playing_from_bottom_to_top, 0)
-            // overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.playing_from_bottom_to_top, 0)
+        binding.mainPlayingLayout.setOnClickListener {
+            if (::musicService.isInitialized && musicService.getPlayStatus()) {
+                val intent = Intent(this, PlayingActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.playing_from_bottom_to_top, 0)
+                // overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.playing_from_bottom_to_top, 0)
+            } else {
+                Toast.makeText(this, R.string.main_playing_tab_content, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -171,10 +193,21 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (::musicBinder.isInitialized && ::musicService.isInitialized) {
+            if (musicService.getMediaPlayer().isPlaying) {
+                binding.mainPlayingPlay.setImageResource(R.drawable.pause_circle)
+            } else {
+                binding.mainPlayingPlay.setImageResource(R.drawable.play_circle)
+            }
+        }
+    }
 
-    inner class MyConn: ServiceConnection {
+    inner class MyConn : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             musicBinder = service as MusicService.MusicBinder
+            musicService = musicBinder.getService()
             bound = true
         }
 

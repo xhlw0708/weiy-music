@@ -45,7 +45,7 @@
                 android:textColor="@color/weiy_playing_color"
                 android:text="歌曲" />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/playing_lyric_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,11 +53,11 @@
                 android:layout_marginStart="5dp"
                 android:textColor="@color/weiy_playing_color"
                 android:layout_toEndOf="@id/playing_song_title"
-                android:text="歌词" />
+                android:text="歌词" />-->
 
         </RelativeLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
+        <FrameLayout
             android:id="@+id/playing_view_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"

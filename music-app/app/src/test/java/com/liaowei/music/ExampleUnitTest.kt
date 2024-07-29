@@ -12,6 +12,6 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        println("${228206/1000/60} : ${228206/1000%60}")
     }
 }

@@ -45,11 +45,13 @@ class PlayingActivity : AppCompatActivity() {
     private fun initView() {
         binding.playingBack.setOnClickListener { finish() }
         val fragments: List<Fragment> =
-            listOf(PlayingSongFragment.newInstance(), PlayingLyricFragment.newInstance())
+            // listOf(PlayingSongFragment.newInstance(), PlayingLyricFragment.newInstance())
+            listOf(PlayingSongFragment.newInstance())
+        supportFragmentManager.beginTransaction().add(R.id.playing_view_pager, fragments[0]).commit()
 
-        binding.playingViewPager.adapter = PlayingAdapter(this, fragments)
+        // binding.playingViewPager.adapter = PlayingAdapter(this, fragments)
         // 切换页面更换上标题
-        binding.playingViewPager.registerOnPageChangeCallback(object :
+        /*binding.playingViewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             @SuppressLint("ResourceAsColor")
             override fun onPageScrolled(
@@ -66,7 +68,7 @@ class PlayingActivity : AppCompatActivity() {
                     // binding.playingSongTitle.setTextColor(R.color.weiy_playing_color)
                 }
             }
-        })
+        })*/
     }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)

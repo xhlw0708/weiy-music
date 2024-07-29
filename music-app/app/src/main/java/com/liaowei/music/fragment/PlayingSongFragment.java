@@ -2,7 +2,9 @@ package com.liaowei.music.fragment;
 
 import static com.liaowei.music.common.constant.MusicConstant.DEFAULT_MUSIC_TYPE;
 import static com.liaowei.music.service.MusicService.GET_SONG_STATE_MSG;
+import static com.liaowei.music.service.MusicService.SEND_SONG_STATE_MSG;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,41 +16,56 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.liaowei.music.R;
 import com.liaowei.music.databinding.FragmentPlayingSongBinding;
-import com.liaowei.music.fragment.PlayingSongViewModel;
 import com.liaowei.music.main.model.Song;
 import com.liaowei.music.service.MusicService;
 
+
 public class PlayingSongFragment extends Fragment {
 
-    private FragmentPlayingSongBinding binding;
+    private static FragmentPlayingSongBinding binding;
     private static boolean bound = false;
-    private static boolean progress = false;
     private MusicService.MusicBinder musicBinder;
     private MusicService musicService;
-    private Handler initHandler = new Handler(Looper.getMainLooper());
+    private final Handler initHandler = new Handler(Looper.getMainLooper());
     private Messenger serviceMessenger;
-    private Messenger clentMessenger = new Messenger(new UpdateProgressBarHandler(Looper.getMainLooper()));
+    private final Messenger clentMessenger = new Messenger(new UpdateProgressBarHandler(Looper.getMainLooper()));
     private final ServiceConnection mConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             musicBinder = (MusicService.MusicBinder) service;
+            musicService = musicBinder.getService();
             serviceMessenger = new Messenger(service);
             bound = true;
+
+           /* Message clientMsg = Message.obtain(null, GET_SONG_STATE_MSG);
+            clientMsg.replyTo = clentMessenger;
+            try {
+                serviceMessenger.send(clientMsg);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }*/
+
+            /*new Thread(() -> {
+                while (bound) {
+                    try {
+                        Message clientMsg = Message.obtain(null, GET_SONG_STATE_MSG);
+                        clientMsg.replyTo = clentMessenger;
+                        serviceMessenger.send(clientMsg);
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }).start();*/
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -57,8 +74,28 @@ public class PlayingSongFragment extends Fragment {
             bound = false;
         }
     };
+    private final Runnable task = () -> {
+        while (bound) {
+            Message message = Message.obtain(new UpdateProgressBarHandler(Looper.getMainLooper()), GET_SONG_STATE_MSG);
+            message.arg1 = musicService.getDuration();
+            message.arg2 = musicService.getPosition();
+            message.sendToTarget();
+        }
+    };
 
-    class UpdateProgressBarHandler extends Handler {
+    public static Handler myHandler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            binding.progressBar.setMax(msg.arg1);
+            binding.progressBar.setProgress(msg.arg2);
+            binding.duration.setText(formatTime(msg.arg1));
+            binding.position.setText(formatTime(msg.arg2));
+        }
+    };
+
+
+    static class UpdateProgressBarHandler extends Handler {
         public UpdateProgressBarHandler(@NonNull Looper looper) {
             super(looper);
         }
@@ -66,12 +103,16 @@ public class PlayingSongFragment extends Fragment {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if (msg.what == MusicService.SEND_SONG_STATE_MSG) {
+            if (msg.what == GET_SONG_STATE_MSG) {
                 int duration = msg.arg1; // 总时长
                 int position = msg.arg2; // 当前播放进度
                 // 更新进度条
                 binding.progressBar.setMax(duration);
                 binding.progressBar.setProgress(position);
+                // 更新总时长
+                binding.duration.setText(formatTime(duration));
+                // 更新当前进度
+                binding.position.setText(formatTime(position));
             }
         }
     }
@@ -79,7 +120,6 @@ public class PlayingSongFragment extends Fragment {
     public static PlayingSongFragment newInstance() {
         return new PlayingSongFragment();
     }
-
 
     @Nullable
     @Override
@@ -104,37 +144,23 @@ public class PlayingSongFragment extends Fragment {
         if (!bound) {
             Intent intent = new Intent(getContext(), MusicService.class);
             intent.putExtra("PLAYING_FLAG", DEFAULT_MUSIC_TYPE);
-            intent.putExtra("song", new Song(1, "周杰伦", 1L, R.drawable.jay1, R.raw.test3, 1, 1));
+            intent.putExtra("song", new Song(1, "周杰伦", 1L, R.drawable.jay1, R.raw.test1, 1, 1));
             requireActivity().bindService(intent, mConn, Context.BIND_AUTO_CREATE);
-            progress = true;
         }
         initHandler.postDelayed(() -> {
             // 获取歌曲进度
-            /*try {
-                Message clientMsg = Message.obtain(null, GET_SONG_STATE_MSG);
-                clientMsg.replyTo = clentMessenger;
-                serviceMessenger.send(clientMsg);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }*/
+            // 执行任务
+            // CompletableFuture.runAsync(task);
+            new Thread(task).start();
 
-            if (progress) {
-                new Thread(() -> {
-                    int duration = musicBinder.callGetDuration();
-                    int position = musicBinder.callGetPosition();
-                    binding.progressBar.setMax(duration);
-                    binding.progressBar.setProgress(position);
-                }).start();
-            }
+            // 绑定seekBar事件
+            bindSeekBar();
 
             // 绑定播放按钮单击事件
             bindPlayBtn();
 
-            // 监听播放进度
-            // musicBinder.callIsPlaying(true);
-
             // 进入页面初始化播放按钮
-            if (musicBinder.callGetPlayStatus()) {
+            if (musicService.getPlayStatus()) {
                 binding.playingBtn.setImageResource(R.drawable.pause_circle_80);
             } else {
                 binding.playingBtn.setImageResource(R.drawable.play_circle_80);
@@ -142,28 +168,46 @@ public class PlayingSongFragment extends Fragment {
 
             // 绑定下一首
             binding.playingNextSongBtn.setOnClickListener(v -> {
-                musicBinder.callNextSong();
-                if (musicBinder.callGetIndex() == musicBinder.callGetPlayListSize() - 1) {
+                musicService.nextSong();
+                // CompletableFuture.runAsync(task);
+                new Thread(task).start();
+                if (musicService.getIndex() == musicService.getPlayListSize() - 1) {
                     setNextSongBtnState(R.drawable.skip_next_gray, false); // 切换下一首状态为不可点
                 }
                 setPrevSongBtnState(R.drawable.skip_previous, true);
             });
             // 绑定上一首
             binding.playingPrevSongBtn.setOnClickListener(v -> {
-                musicBinder.callPreSong();
-                if (musicBinder.callGetIndex() == 0) {
+                musicService.preSong();
+                // CompletableFuture.runAsync(task);
+                new Thread(task).start();
+                if (musicService.getIndex() == 0) {
                     setPrevSongBtnState(R.drawable.skip_previous_gray, false);
                 }
-                setNextSongBtnState(R.drawable.skip_next, true); // 切换下一首状态为可点
+                setNextSongBtnState(R.drawable.skip_next, true); // 切换下一首状态为可点*//*
             });
-        }, 200);
+        }, 500);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("duration", musicBinder.callGetDuration());
-        outState.putInt("position", musicBinder.callGetPosition());
+    // 绑定seekBar事件
+    private void bindSeekBar() {
+        binding.progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // 音乐更新
+                musicService.updateProgress(seekBar.getProgress());
+                // 更新播放图标
+                binding.playingBtn.setImageResource(R.drawable.pause_circle_80);
+            }
+        });
     }
 
     // 设置上一首按钮状态
@@ -181,13 +225,26 @@ public class PlayingSongFragment extends Fragment {
     // 绑定播放按钮
     private void bindPlayBtn() {
         binding.playingBtn.setOnClickListener(v -> {
-            if (musicBinder.callGetPlayStatus()) { // 正在播放
-                musicBinder.callsStartOrPause(false); // 暂停
+            if (musicService.getPlayStatus()) { // 正在播放
+                musicService.startOrPause(false); // 暂停
                 binding.playingBtn.setImageResource(R.drawable.play_circle_80);
             } else {
-                musicBinder.callsStartOrPause(true); // 播放
+                musicService.playAsync(); // 播放
                 binding.playingBtn.setImageResource(R.drawable.pause_circle_80);
             }
+            // 执行任务
+            // CompletableFuture.runAsync(task);
+            new Thread(task).start();
         });
     }
+
+    // 格式化时间
+    @SuppressLint("DefaultLocale")
+    private static String formatTime(int time) {
+        int minute = time / 1000 / 60;
+        int second = time / 1000 % 60;
+        return String.format("%02d:%02d", minute, second);
+    }
+
 }
+
