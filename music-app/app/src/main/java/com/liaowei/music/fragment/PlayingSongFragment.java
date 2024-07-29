@@ -5,10 +5,13 @@ import static com.liaowei.music.service.MusicService.GET_SONG_STATE_MSG;
 import static com.liaowei.music.service.MusicService.SEND_SONG_STATE_MSG;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -20,11 +23,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import com.liaowei.music.R;
+import com.liaowei.music.broadcast.SeekBarReceiver;
 import com.liaowei.music.databinding.FragmentPlayingSongBinding;
 import com.liaowei.music.main.model.Song;
 import com.liaowei.music.service.MusicService;
@@ -74,23 +80,14 @@ public class PlayingSongFragment extends Fragment {
             bound = false;
         }
     };
-    private final Runnable task = () -> {
-        while (bound) {
-            Message message = Message.obtain(new UpdateProgressBarHandler(Looper.getMainLooper()), GET_SONG_STATE_MSG);
-            message.arg1 = musicService.getDuration();
-            message.arg2 = musicService.getPosition();
-            message.sendToTarget();
-        }
-    };
 
-    public static Handler myHandler = new Handler(Looper.getMainLooper()){
+    public static Handler myHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            binding.progressBar.setMax(msg.arg1);
-            binding.progressBar.setProgress(msg.arg2);
-            binding.duration.setText(formatTime(msg.arg1));
-            binding.position.setText(formatTime(msg.arg2));
+            int position = msg.arg1;
+            binding.progressBar.setProgress(position);
+            binding.position.setText(formatTime(position));
         }
     };
 
@@ -138,6 +135,7 @@ public class PlayingSongFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -151,7 +149,10 @@ public class PlayingSongFragment extends Fragment {
             // 获取歌曲进度
             // 执行任务
             // CompletableFuture.runAsync(task);
-            new Thread(task).start();
+            // new Thread(task).start();
+            binding.progressBar.setMax(musicService.getDuration());
+            binding.duration.setText(formatTime(musicService.getDuration()));
+
 
             // 绑定seekBar事件
             bindSeekBar();
@@ -170,7 +171,9 @@ public class PlayingSongFragment extends Fragment {
             binding.playingNextSongBtn.setOnClickListener(v -> {
                 musicService.nextSong();
                 // CompletableFuture.runAsync(task);
-                new Thread(task).start();
+                // new Thread(task).start();
+                binding.progressBar.setMax(musicService.getDuration());
+                binding.duration.setText(formatTime(musicService.getDuration()));
                 if (musicService.getIndex() == musicService.getPlayListSize() - 1) {
                     setNextSongBtnState(R.drawable.skip_next_gray, false); // 切换下一首状态为不可点
                 }
@@ -180,7 +183,9 @@ public class PlayingSongFragment extends Fragment {
             binding.playingPrevSongBtn.setOnClickListener(v -> {
                 musicService.preSong();
                 // CompletableFuture.runAsync(task);
-                new Thread(task).start();
+                // new Thread(task).start();
+                binding.progressBar.setMax(musicService.getDuration());
+                binding.duration.setText(formatTime(musicService.getDuration()));
                 if (musicService.getIndex() == 0) {
                     setPrevSongBtnState(R.drawable.skip_previous_gray, false);
                 }
@@ -234,7 +239,7 @@ public class PlayingSongFragment extends Fragment {
             }
             // 执行任务
             // CompletableFuture.runAsync(task);
-            new Thread(task).start();
+            // new Thread(task).start();
         });
     }
 

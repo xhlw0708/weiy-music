@@ -15,6 +15,8 @@ import android.os.Messenger
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.liaowei.music.broadcast.SeekBarReceiver
 import com.liaowei.music.common.constant.MusicConstant.Companion.ADD_SONG
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.IS_PLAYING
@@ -31,7 +33,7 @@ class MusicService : Service() {
     private val binder = MusicBinder(this)
 
     companion object {
-        private val mediaPlayer: MediaPlayer = MediaPlayer()
+        val mediaPlayer: MediaPlayer = MediaPlayer()
         private var index = 0 // 记录播放的索引
         const val GET_SONG_STATE_MSG = 1 // 获取歌曲时长和播放进度
         const val SEND_SONG_STATE_MSG = 2 // 发送给客户端消息
@@ -79,6 +81,8 @@ class MusicService : Service() {
     // 维护一个播放队列
     private var playList: LinkedList<Song>? = LinkedList()
     var timer: Timer? = null
+    val intent = Intent("com.liaowei.music.broadcast.UpdateSeekBarPosition")
+
 
     /**
      * 1.怎么绑定的
@@ -129,6 +133,12 @@ class MusicService : Service() {
                     // 正在播放，只需要添加到队列即可
                     playList?.push(song)
                 }
+                Thread{
+                    while (mediaPlayer.isPlaying) {
+                        intent.putExtra("position", mediaPlayer.currentPosition)
+                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+                    }
+                }.start()
             }
         }
         return binder
