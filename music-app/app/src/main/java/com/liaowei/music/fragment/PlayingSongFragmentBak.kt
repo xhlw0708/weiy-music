@@ -30,7 +30,7 @@ import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_T
 import com.liaowei.music.common.constant.MusicConstant.Companion.IS_PLAYING
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.databinding.FragmentPlayingSongBinding
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 import com.liaowei.music.service.MusicService
 
 class PlayingSongFragmentBak : Fragment() {

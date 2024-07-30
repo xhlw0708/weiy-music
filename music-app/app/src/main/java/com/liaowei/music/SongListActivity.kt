@@ -1,14 +1,10 @@
 package com.liaowei.music
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.View
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.liaowei.music.common.adapter.SongListAdapter
 import com.liaowei.music.common.constant.PageFlag
 import com.liaowei.music.databinding.ActivitySongListBinding
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 
 class SongListActivity : AppCompatActivity() {
 

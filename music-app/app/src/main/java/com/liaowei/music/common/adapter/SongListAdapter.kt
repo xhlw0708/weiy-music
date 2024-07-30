@@ -14,8 +14,7 @@ import com.liaowei.music.R
 import com.liaowei.music.common.constant.MusicConstant.Companion.UPDATE_PLAYING_FLAG
 import com.liaowei.music.common.constant.MusicConstant.Companion.UPDATE_PLAYING_TAB
 import com.liaowei.music.common.constant.PageFlag
-import com.liaowei.music.common.fragment.SongFragment
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 
 class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>, private val flag: Int) :
     RecyclerView.Adapter<SongListAdapter.SongListViewHolder>() {

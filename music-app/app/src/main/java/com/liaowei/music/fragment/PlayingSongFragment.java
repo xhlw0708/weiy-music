@@ -2,14 +2,11 @@ package com.liaowei.music.fragment;
 
 import static com.liaowei.music.common.constant.MusicConstant.DEFAULT_MUSIC_TYPE;
 import static com.liaowei.music.service.MusicService.GET_SONG_STATE_MSG;
-import static com.liaowei.music.service.MusicService.SEND_SONG_STATE_MSG;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,21 +15,18 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import com.liaowei.music.R;
-import com.liaowei.music.broadcast.SeekBarReceiver;
 import com.liaowei.music.databinding.FragmentPlayingSongBinding;
-import com.liaowei.music.main.model.Song;
+import com.liaowei.music.model.domain.Song;
 import com.liaowei.music.service.MusicService;
 
 

@@ -12,19 +12,14 @@ import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.databinding.ActivityPlayingBinding
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 import com.liaowei.music.service.MusicService
 import com.liaowei.music.service.MusicService.MusicBinder
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
-import java.util.concurrent.TimeUnit
 
 
 class PlayingActivity : AppCompatActivity() {
@@ -51,7 +46,6 @@ class PlayingActivity : AppCompatActivity() {
         override fun onServiceDisconnected(name: ComponentName) {
         }
     }
-    private val executorService: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
 
 
     override fun onAttachedToWindow() {

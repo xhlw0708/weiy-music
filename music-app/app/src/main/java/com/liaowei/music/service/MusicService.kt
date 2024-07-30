@@ -15,19 +15,11 @@ import android.os.Messenger
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.liaowei.music.broadcast.SeekBarReceiver
-import com.liaowei.music.common.constant.MusicConstant.Companion.ADD_SONG
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
-import com.liaowei.music.common.constant.MusicConstant.Companion.IS_PLAYING
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_MUSIC
-import com.liaowei.music.common.constant.MusicConstant.Companion.REMOVE_SONG
-import com.liaowei.music.fragment.PlayingSongFragment
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 import java.util.LinkedList
-import java.util.Timer
-import java.util.TimerTask
 
 class MusicService : Service() {
 

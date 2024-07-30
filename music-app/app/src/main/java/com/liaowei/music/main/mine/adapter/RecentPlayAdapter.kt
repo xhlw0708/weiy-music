@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.liaowei.music.R
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 
 class RecentPlayAdapter(private val songList: List<Song>): RecyclerView.Adapter<RecentPlayAdapter.RecentPlayViewHolder>() {
     override fun onCreateViewHolder(

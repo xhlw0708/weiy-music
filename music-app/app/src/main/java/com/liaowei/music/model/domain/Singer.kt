@@ -1,4 +1,4 @@
-package com.liaowei.music.main.model
+package com.liaowei.music.model.domain
 
 import android.os.Parcel
 import android.os.Parcelable

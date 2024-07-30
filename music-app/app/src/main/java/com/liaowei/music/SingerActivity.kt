@@ -1,23 +1,19 @@
 package com.liaowei.music
 
 import android.annotation.SuppressLint
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.View
-import android.widget.GridLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.liaowei.music.common.adapter.SingerAdapter
 import com.liaowei.music.databinding.ActivitySingerBinding
-import com.liaowei.music.main.model.Singer
+import com.liaowei.music.model.domain.Singer
 
 
 class SingerActivity : AppCompatActivity() {

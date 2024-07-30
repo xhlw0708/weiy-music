@@ -1,25 +1,13 @@
 package com.liaowei.music.common.adapter
 
-import android.R.attr.radius
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.graphics.drawable.RoundedBitmapDrawable
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.liaowei.music.R
-import com.liaowei.music.common.view.CircleView
-import com.liaowei.music.main.model.Singer
+import com.liaowei.music.model.domain.Singer
 
 
 class SingerAdapter(private val singerList: List<Singer>) :

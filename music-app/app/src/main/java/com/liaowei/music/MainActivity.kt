@@ -1,17 +1,13 @@
 package com.liaowei.music
 
 import android.annotation.SuppressLint
-import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import android.view.Gravity
 import android.widget.TextView
 import android.widget.Toast
@@ -26,17 +22,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.liaowei.music.broadcast.MusicReceiver
-import com.liaowei.music.broadcast.SeekBarReceiver
 import com.liaowei.music.common.adapter.ActivityViewPagerAdapter
-import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_MUSIC
 import com.liaowei.music.databinding.ActivityMainBinding
-import com.liaowei.music.fragment.PlayingSongFragment
 import com.liaowei.music.main.hall.HallFragment
 import com.liaowei.music.main.home.HomeFragment
 import com.liaowei.music.main.mine.MineFragment
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 import com.liaowei.music.service.MusicService
 import java.util.Random
 

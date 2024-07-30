@@ -12,7 +12,7 @@ import com.liaowei.music.R
 import com.liaowei.music.common.adapter.SongListAdapter
 import com.liaowei.music.common.constant.PageFlag
 import com.liaowei.music.databinding.FragmentSongBinding
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 
 class SongFragment : Fragment() {
 

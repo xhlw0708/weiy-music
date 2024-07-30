@@ -6,13 +6,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.Message
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.liaowei.music.R
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.UPDATE_PLAYING_FLAG
 import com.liaowei.music.common.constant.MusicConstant.Companion.UPDATE_PLAYING_TAB
-import com.liaowei.music.main.model.Song
+import com.liaowei.music.model.domain.Song
 
 class MusicReceiver(private val handler: Handler) : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
