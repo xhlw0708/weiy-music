@@ -234,7 +234,7 @@ public class PlayingSongFragment extends Fragment {
                 musicService.startOrPause(false); // 暂停
                 binding.playingBtn.setImageResource(R.drawable.play_circle_80);
             } else {
-                musicService.playAsync(); // 播放
+                // musicService.playAsync(); // 播放
                 binding.playingBtn.setImageResource(R.drawable.pause_circle_80);
             }
             // 执行任务

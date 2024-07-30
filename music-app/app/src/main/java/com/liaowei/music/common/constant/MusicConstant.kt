@@ -4,7 +4,8 @@ interface MusicConstant {
     companion object {
         const val PLAYING_FLAG = "PLAYING" // 播放标志
         const val UPDATE_PLAYING_FLAG = "UPDATE_PLAYING" // 更新播放栏标志
-        const val DEFAULT_MUSIC_TYPE = 0 // 音乐标志
+        const val DEFAULT_MUSIC_TYPE = 0 // 仅打开播放页
+        const val PLAYING_MUSIC = 9 // 播放音乐
         const val NEXT_SONG = 1 // 下一首
         const val PREVIOUS_SONG = 2 // 上一首
         const val GET_PROGRESS = 3 // 获取进度
