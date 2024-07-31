@@ -82,6 +82,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, PlayingActivity::class.java).apply {
                 putExtra(PLAYING_FLAG, PLAYING_MUSIC)
                 putExtra("song", song)
+                // putExtra("name", name)
+                // putExtra("singerName", singerName)
+                // putExtra("path", path)
             }
             // 跳转activity
             startActivity(intent)

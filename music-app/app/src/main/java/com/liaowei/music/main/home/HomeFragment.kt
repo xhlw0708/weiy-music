@@ -99,10 +99,10 @@ class HomeFragment : Fragment() {
         // 轮播图
         carousel = Carousel(context, binding.homeCarouselDot, binding.homeCarouselViewPager)
         val ids = intArrayOf(
-            com.liaowei.music.R.drawable.ikun1,
-            com.liaowei.music.R.drawable.ikun2,
-            com.liaowei.music.R.drawable.ikun3,
-            com.liaowei.music.R.drawable.ikun4,
+            R.drawable.ikun1,
+            R.drawable.ikun2,
+            R.drawable.ikun3,
+            R.drawable.ikun4,
         )
         carousel.initViews(ids)
         carousel.startAutoScroll()

@@ -40,9 +40,11 @@ class PlayingActivity : AppCompatActivity() {
     private lateinit var musicService: MusicService
     private val handler = Handler(Looper.getMainLooper())
     private val mConn: ServiceConnection = object : ServiceConnection {
+        @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             musicBinder = service as MusicBinder
             musicService = musicBinder!!.getService()
+            initView()
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
@@ -79,10 +81,20 @@ class PlayingActivity : AppCompatActivity() {
         // 判断是否需要换歌曲播放，列表点过来的需要添加PLAYING_MUSIC
         val isChangeSong = intent.getIntExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
         // 获取跳转过来的歌曲
-        val song = intent.getParcelableExtra("song", Song::class.java)
-        if (song?.resourceId == null || "null" == song.resourceId) binding.playingCoverImg.setImageResource(R.drawable.playing_music)
-        if (song?.name == null || "null" == song.name) binding.name.text = getString(R.string.unknown_song_name)
-        if (song?.singerName == null || "null" == song.singerName) binding.singerName.text = getString(R.string.unknown_singer_name)
+        val song = intent.getSerializableExtra("song", Song::class.java)
+        val name = intent.getStringExtra("name")
+        val singerName = intent.getStringExtra("singerName")
+        val path = intent.getStringExtra("path")
+
+        // val song = Song(name ?: "", singerName ?: "", path ?: "")
+        if (song?.resourceId == null || "null" == song.resourceId)
+            binding.playingCoverImg.setImageResource(R.drawable.playing_music)
+        if (song?.name == null || "null" == song.name) binding.name.text =
+            getString(R.string.unknown_song_name)
+        else binding.name.text = name
+        if (song?.singerName == null || "null" == song.singerName) binding.singerName.text =
+            getString(R.string.unknown_singer_name)
+        else binding.singerName.text = singerName
 
         // 给图片设置动画
         AnimationUtil.startRotateAnimation(binding.playingCoverImg)
@@ -91,65 +103,64 @@ class PlayingActivity : AppCompatActivity() {
             // 将歌曲传递给service进行播放
             putExtra(PLAYING_FLAG, isChangeSong)
             putExtra("song", song)
+            // putExtra("name", name)
+            // putExtra("singerName", singerName)
+            // putExtra("path", path)
         }
         bindService(bindServiceIntent, mConn, BIND_AUTO_CREATE)
 
-        initView()
     }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun initView() {
-        handler.postDelayed({
-            // 绑定返回按钮
-            binding.playingBack.setOnClickListener { finish() }
-            // 改变播放按钮图片
+        // 绑定返回按钮
+        binding.playingBack.setOnClickListener { finish() }
+        // 改变播放按钮图片
+        changePlayingBtnImg()
+        // 获取歌曲时长
+        val duration = musicService.getDuration()
+        binding.progressBar.max = duration
+        binding.duration.text = formatTime(binding.progressBar.max)
+        // 绑定播放按钮
+        binding.playingBtn.setOnClickListener {
+            MusicService.startOrPause(!MusicService.getMediaPlayerStatus())
             changePlayingBtnImg()
-            // 获取歌曲时长
-            val duration = musicService.getDuration()
-            binding.progressBar.max = duration
-            binding.duration.text = formatTime(binding.progressBar.max)
-            // 绑定播放按钮
-            binding.playingBtn.setOnClickListener {
-                MusicService.startOrPause(!MusicService.getMediaPlayerStatus())
+        }
+        // 绑定播放进度条
+        binding.progressBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                musicService.getMediaPlayer().seekTo(seekBar!!.progress)
+                musicService.startOrPause(true)
                 changePlayingBtnImg()
             }
-            // 绑定播放进度条
-            binding.progressBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    musicService.getMediaPlayer().seekTo(seekBar!!.progress)
-                    musicService.startOrPause(true)
-                    changePlayingBtnImg()
-                }
-            })
-            // 绑定下一曲按钮
-            binding.playingNextSongBtn.setOnClickListener {
-                // 播放下一首
-                musicService.nextSong()
-                if (musicService.getPlayListSize() - 1 == musicService.getIndex()) {
-                    // 设置下一首按钮不可点
-                    setNextSongBtnState(R.drawable.skip_next_gray, false) // 切换下一首状态为不可点
-                }
-                // 设置上一首按钮可点
-                setPrevSongBtnState(R.drawable.skip_previous, true)
+        })
+        // 绑定下一曲按钮
+        binding.playingNextSongBtn.setOnClickListener {
+            // 播放下一首
+            musicService.nextSong()
+            if (musicService.getPlayListSize() - 1 == musicService.getIndex()) {
+                // 设置下一首按钮不可点
+                setNextSongBtnState(R.drawable.skip_next_gray, false) // 切换下一首状态为不可点
             }
-            // 绑定上一首按钮
-            binding.playingPrevSongBtn.setOnClickListener {
-                // 播放上一首
-                musicService.preSong()
-                if (musicService.getIndex() == 0) {
-                    setPrevSongBtnState(R.drawable.skip_previous_gray, false)
-                }
-                // 切换下一首按钮可点
-                setNextSongBtnState(R.drawable.skip_next, true)
+            // 设置上一首按钮可点
+            setPrevSongBtnState(R.drawable.skip_previous, true)
+        }
+        // 绑定上一首按钮
+        binding.playingPrevSongBtn.setOnClickListener {
+            // 播放上一首
+            musicService.preSong()
+            if (musicService.getIndex() == 0) {
+                setPrevSongBtnState(R.drawable.skip_previous_gray, false)
             }
-
-        } , 200)
+            // 切换下一首按钮可点
+            setNextSongBtnState(R.drawable.skip_next, true)
+        }
     }
 
 

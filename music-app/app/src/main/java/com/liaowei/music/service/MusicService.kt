@@ -81,13 +81,17 @@ class MusicService : Service() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onBind(intent: Intent): IBinder {
         val type = intent.getIntExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
-        val song = intent.getParcelableExtra("song", Song::class.java)
+        val song = intent.getSerializableExtra("song", Song::class.java)
+        val name = intent.getStringExtra("name")
+        val singerName = intent.getStringExtra("singerName")
+        val path = intent.getStringExtra("path")
         when (type) {
             PLAYING_MUSIC -> {
-                if (song?.resourceId != null && "null" != song.resourceId) {
+                if (path != null && "null" != path) {
+                    // val song = Song(name?:"", singerName?:"", path)
                     playList?.push(song)
                     mediaPlayer.reset()
-                    mediaPlayer.setDataSource(song.resourceId)
+                    mediaPlayer.setDataSource(song?.resourceId)
                     mediaPlayer.prepare()
                     startOrPause(true)
                 } else{

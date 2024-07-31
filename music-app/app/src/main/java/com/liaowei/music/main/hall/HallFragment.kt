@@ -9,11 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.liaowei.music.common.adapter.FragmentViewPagerAdapter
+import com.liaowei.music.common.constant.PageFlag
 import com.liaowei.music.common.fragment.SongFragment
 import com.liaowei.music.databinding.FragmentHallBinding
+import com.liaowei.music.event.EventMessage
+import org.greenrobot.eventbus.EventBus
 
 class HallFragment : Fragment() {
 
@@ -29,6 +33,7 @@ class HallFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +66,18 @@ class HallFragment : Fragment() {
             // 将tabItem绑定到tab
             tab.setCustomView(tabView)
         }.attach()
+
+        // 绑定tab选择事件
+        binding.hallViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                // binding.topTitle.text = topTitles[position] // 更换顶部名称
+                // Toast.makeText(requireContext(), "$position", Toast.LENGTH_SHORT).show()
+                //
+                EventBus.getDefault().post(EventMessage(position, "this is $position"))
+            }
+        })
 
     }
 }
