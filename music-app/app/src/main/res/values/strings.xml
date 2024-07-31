@@ -16,4 +16,7 @@
     <string name="cover_img">封面图</string>
     <string name="song_separator">·</string>
     <string name="main_playing_tab_content">请选择音乐</string>
+    <string name="main_no_local_music">本地无音乐</string>
+    <string name="unknown_song_name">未知歌曲</string>
+    <string name="unknown_singer_name">未知歌手</string>
 </resources>

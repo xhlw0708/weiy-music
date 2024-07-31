@@ -136,7 +136,7 @@ public class PlayingSongFragment extends Fragment {
         if (!bound) {
             Intent intent = new Intent(getContext(), MusicService.class);
             intent.putExtra("PLAYING_FLAG", DEFAULT_MUSIC_TYPE);
-            intent.putExtra("song", new Song(1, "周杰伦", 1L, R.drawable.jay1, R.raw.test1, 1, 1));
+            // intent.putExtra("song", new Song(1, "周杰伦", 1L, "Jay", R.drawable.jay1, R.raw.test1, 1, 1));
             requireActivity().bindService(intent, mConn, Context.BIND_AUTO_CREATE);
         }
         initHandler.postDelayed(() -> {

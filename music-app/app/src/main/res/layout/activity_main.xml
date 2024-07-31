@@ -122,6 +122,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:maxLines="@integer/text_view_max_one_line"
+            android:ellipsize="end"
             android:text="@string/main_playing_tab_content" />
 
         <ImageView

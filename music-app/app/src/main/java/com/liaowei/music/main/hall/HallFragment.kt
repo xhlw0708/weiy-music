@@ -18,10 +18,10 @@ import com.liaowei.music.databinding.FragmentHallBinding
 class HallFragment : Fragment() {
 
     private val binding: FragmentHallBinding by lazy { FragmentHallBinding.inflate(layoutInflater) }
-    private val classifyList: List<String> = listOf("华语", "流行", "摇滚", "民谣", "电子", "网络流行", "日语", "英语",)
 
     companion object {
         fun newInstance() = HallFragment()
+        val classifyList: List<String> = listOf("华语", "流行", "摇滚", "民谣", "电子", "网络流行", "日语", "英语",)
     }
 
     private val viewModel: HallViewModel by viewModels()

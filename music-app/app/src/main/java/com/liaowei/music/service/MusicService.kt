@@ -84,14 +84,16 @@ class MusicService : Service() {
         val song = intent.getParcelableExtra("song", Song::class.java)
         when (type) {
             PLAYING_MUSIC -> {
-                playList?.push(song)
-                mediaPlayer.reset()
-                val afd: AssetFileDescriptor = resources.openRawResourceFd(song!!.resourceId)
-                mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                mediaPlayer.prepare()
-                startOrPause(true)
+                if (song?.resourceId != null && "null" != song.resourceId) {
+                    playList?.push(song)
+                    mediaPlayer.reset()
+                    mediaPlayer.setDataSource(song.resourceId)
+                    mediaPlayer.prepare()
+                    startOrPause(true)
+                } else{
+                    Toast.makeText(baseContext, "当前音乐资源为空", Toast.LENGTH_SHORT).show()
+                }
             }
-
             else -> {
                 Log.d("tag", "onBind: ${playList?.size}")
                 // 仅仅打开播放页
@@ -119,8 +121,7 @@ class MusicService : Service() {
         if (playList?.size!! > index + 1) {
             mediaPlayer.reset()
             index++
-            val afd: AssetFileDescriptor = resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
-            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer.setDataSource(playList?.get(index)?.resourceId!!)
             mediaPlayer.prepare()
             startOrPause(true)
         } else if (playList?.size!! == index + 1) {
@@ -138,9 +139,7 @@ class MusicService : Service() {
         if (index > 0) {
             mediaPlayer.reset()
             index--
-            val afd: AssetFileDescriptor =
-                resources.openRawResourceFd(playList?.get(index)?.resourceId!!)
-            mediaPlayer.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            mediaPlayer.setDataSource(playList?.get(index)?.resourceId!!)
             mediaPlayer.prepare()
             startOrPause(true)
         }

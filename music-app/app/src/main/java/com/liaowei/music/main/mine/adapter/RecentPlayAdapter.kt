@@ -22,7 +22,7 @@ class RecentPlayAdapter(private val songList: List<Song>): RecyclerView.Adapter<
         holder.coverImg.setImageResource(song.img)
         holder.playName.text = song.name
         holder.playName.requestFocus() // 请求焦点
-        holder.playSinger.text = if (song.singerId == 1L) "周杰伦" else "蔡徐坤"
+        holder.playSinger.text = if (song.singerId == 1) "周杰伦" else "蔡徐坤"
     }
 
     override fun getItemCount(): Int = songList.size

@@ -37,4 +37,12 @@ fun callAddSong(){
   
   尝试保留自定义的binder并使用messenger通信，但是不会发送消息。故采用在客户端开启线程一直循环获取播放进度再刷新进度条。bug：在播放页，点击暂停按钮，再退出界面，会一直卡顿。
 
+- [x] android13以前添加外部存储权限获取音频的方式已经被弃用了，并且不会获取到数据，13+需要添加另外的权限才行
+  
+  > 添加
+  > 
+  > <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+  > 
+  > 并且需要运行时请求权限
+
 - [ ] 

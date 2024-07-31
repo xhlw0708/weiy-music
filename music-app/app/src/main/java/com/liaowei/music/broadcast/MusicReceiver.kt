@@ -21,10 +21,9 @@ class MusicReceiver(private val handler: Handler) : BroadcastReceiver() {
             UPDATE_PLAYING_TAB -> {
                 val song = intent.getParcelableExtra("song", Song::class.java)
                 val message = Message.obtain()
-                message.data.putInt("img", song?.img ?: 0)
-                message.data.putString("name", song?.name ?: "网络歌手")
-                message.data.putLong("singer", song?.singerId ?: 1)
-                message.data.putInt("playSong", R.raw.test3) // todo: 添加歌曲
+                message.data.putString("name", song?.name ?: "网络热歌")
+                message.data.putString("singerName", song?.singerName ?: "网络歌手")
+                message.data.putString("path", song?.resourceId)
                 handler.sendMessage(message)
             }
         }

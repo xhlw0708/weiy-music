@@ -1,6 +1,8 @@
 package com.liaowei.music.common.adapter
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,11 @@ import com.liaowei.music.model.domain.Song
 
 class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>, private val flag: Int) :
     RecyclerView.Adapter<SongListAdapter.SongListViewHolder>() {
+
+    companion object {
+        private val retriever = MediaMetadataRetriever()
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int): SongListAdapter.SongListViewHolder {
@@ -28,9 +35,19 @@ class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>,
 
     override fun onBindViewHolder(holder: SongListAdapter.SongListViewHolder, position: Int) {
         val song = songList[position]
-        holder.songCoverImg.setImageResource(song.img)
+
+        // 处理封面
+        retriever.setDataSource(song.resourceId)
+        val embeddedPicture = retriever.embeddedPicture // 获取音频内嵌图片
+        if (embeddedPicture == null) {
+            holder.songCoverImg.setImageResource(R.drawable.default_audio)
+        }else{
+            val bitmap = BitmapFactory.decodeByteArray(embeddedPicture, 0, embeddedPicture.size)
+            holder.songCoverImg.setImageBitmap(bitmap)
+        }
+
         holder.songName.text = song.name
-        holder.songSinger.text = if (song.singerId == 1L) "周杰伦" else "蔡徐坤"
+        holder.songSinger.text = song.singerName
 
         when(flag) {
             PageFlag.HOME_FRAGMENT,
@@ -53,6 +70,7 @@ class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>,
         holder.songLayout.setOnClickListener{
             val intent = Intent("com.liaowei.music.broadcast.MusicBroadcast")
             intent.putExtra(UPDATE_PLAYING_FLAG, UPDATE_PLAYING_TAB)
+
             intent.putExtra("song", song)
             val localBroadcastManager = LocalBroadcastManager.getInstance(fragment!!.requireContext())
             localBroadcastManager.sendBroadcast(intent)

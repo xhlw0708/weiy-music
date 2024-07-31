@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.view.animation.RotateAnimation
 import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -16,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
+import com.liaowei.music.common.utils.AnimationUtil
 import com.liaowei.music.databinding.ActivityPlayingBinding
 import com.liaowei.music.model.domain.Song
 import com.liaowei.music.service.MusicService
@@ -74,11 +76,17 @@ class PlayingActivity : AppCompatActivity() {
             insets
         }
 
-
         // 判断是否需要换歌曲播放，列表点过来的需要添加PLAYING_MUSIC
         val isChangeSong = intent.getIntExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
         // 获取跳转过来的歌曲
         val song = intent.getParcelableExtra("song", Song::class.java)
+        if (song?.resourceId == null || "null" == song.resourceId) binding.playingCoverImg.setImageResource(R.drawable.playing_music)
+        if (song?.name == null || "null" == song.name) binding.name.text = getString(R.string.unknown_song_name)
+        if (song?.singerName == null || "null" == song.singerName) binding.singerName.text = getString(R.string.unknown_singer_name)
+
+        // 给图片设置动画
+        AnimationUtil.startRotateAnimation(binding.playingCoverImg)
+
         val bindServiceIntent = Intent(this, MusicService::class.java).apply {
             // 将歌曲传递给service进行播放
             putExtra(PLAYING_FLAG, isChangeSong)

@@ -2,7 +2,7 @@ package com.liaowei.music
 
 import org.junit.Test
 
-import org.junit.Assert.*
+import kotlin.random.Random
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +12,10 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        println("${228206/1000/60} : ${228206/1000%60}")
+        // println("${228206/1000/60} : ${228206/1000%60}")
+        val random = java.util.Random()
+        for (i in 0 until 20) {
+            print("${random.nextInt(11)} ")
+        }
     }
 }
