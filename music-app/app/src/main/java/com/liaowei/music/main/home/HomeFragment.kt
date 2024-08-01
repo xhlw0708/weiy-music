@@ -34,10 +34,6 @@ class HomeFragment : Fragment() {
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
@@ -58,10 +54,12 @@ class HomeFragment : Fragment() {
             requireActivity().contentResolver.query(SONG_CONTENT_URI, null, null, null, null)
         if (cursor != null) {
             while (cursor.moveToNext()) {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
                 val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                 val singerName = cursor.getString(cursor.getColumnIndexOrThrow("singerName"))
                 val path = cursor.getString(cursor.getColumnIndexOrThrow("resourceId"))
                 val song = Song(name, singerName, path)
+                song.id = id
                 songList.add(song)
             }
             cursor.close()

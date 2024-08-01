@@ -16,7 +16,7 @@ class MusicContentProvider : ContentProvider() {
     companion object {
         private const val SONG_DIR: Int = 0
         private const val SONG_ITEM: Int = 1
-        private const val AUTHORITY: String = "com.liaowei.music.provider"
+        const val AUTHORITY: String = "com.liaowei.music.provider"
         private lateinit var uriMatcher: UriMatcher
         private lateinit var db: SQLiteDatabase
         val SONG_CONTENT_URI: Uri = Uri.parse("content://$AUTHORITY/$TABLE_NAME")
@@ -60,6 +60,20 @@ class MusicContentProvider : ContentProvider() {
         return returnUri
     }
 
+    override fun update(
+        uri: Uri, values: ContentValues?, selection: String?,
+        selectionArgs: Array<String>?
+    ): Int {
+        var rows = 0
+        when(uriMatcher.match(uri)) {
+            SONG_ITEM -> {
+                val id = ContentUris.parseId(uri).toInt()
+                rows = db.update(TABLE_NAME, values, "id = ?", arrayOf(id.toString()))
+            }
+        }
+        return rows
+    }
+
     override fun getType(uri: Uri): String? {
         when (uriMatcher.match(uri)) {
             SONG_DIR -> return "vnd.android.cursor.dir/vnd.com.liaowei.music.provider.song"
@@ -72,11 +86,4 @@ class MusicContentProvider : ContentProvider() {
         TODO("Implement this to handle requests to delete one or more rows")
     }
 
-
-    override fun update(
-        uri: Uri, values: ContentValues?, selection: String?,
-        selectionArgs: Array<String>?
-    ): Int {
-        TODO("Implement this to handle requests to update one or more rows.")
-    }
 }

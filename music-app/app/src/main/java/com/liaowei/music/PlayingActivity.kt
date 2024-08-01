@@ -1,8 +1,10 @@
 package com.liaowei.music
 
 import android.content.ComponentName
+import android.content.ContentValues
 import android.content.Intent
 import android.content.ServiceConnection
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -15,11 +17,14 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.liaowei.music.common.constant.DBConstant.Companion.TABLE_NAME
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.common.utils.AnimationUtil
 import com.liaowei.music.databinding.ActivityPlayingBinding
 import com.liaowei.music.model.domain.Song
+import com.liaowei.music.model.provider.MusicContentProvider.Companion.AUTHORITY
+import com.liaowei.music.model.provider.MusicContentProvider.Companion.SONG_CONTENT_URI
 import com.liaowei.music.service.MusicService
 import com.liaowei.music.service.MusicService.MusicBinder
 
@@ -43,7 +48,7 @@ class PlayingActivity : AppCompatActivity() {
         @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             musicBinder = service as MusicBinder
-            musicService = musicBinder!!.getService()
+            musicService = musicBinder.getService()
             initView()
         }
 
@@ -81,18 +86,18 @@ class PlayingActivity : AppCompatActivity() {
         // 判断是否需要换歌曲播放，列表点过来的需要添加PLAYING_MUSIC
         val isChangeSong = intent.getIntExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
         // 获取跳转过来的歌曲
-        val song = intent.getSerializableExtra("song", Song::class.java)
+        // val song = intent.getSerializableExtra("song", Song::class.java)
         val name = intent.getStringExtra("name")
         val singerName = intent.getStringExtra("singerName")
         val path = intent.getStringExtra("path")
 
-        // val song = Song(name ?: "", singerName ?: "", path ?: "")
-        if (song?.resourceId == null || "null" == song.resourceId)
+        val song = Song(name ?: "", singerName ?: "", path ?: "")
+        if (name == null || "" == name)
             binding.playingCoverImg.setImageResource(R.drawable.playing_music)
-        if (song?.name == null || "null" == song.name) binding.name.text =
+        if (singerName == null || "" == singerName) binding.name.text =
             getString(R.string.unknown_song_name)
         else binding.name.text = name
-        if (song?.singerName == null || "null" == song.singerName) binding.singerName.text =
+        if (path == null || "" == path) binding.singerName.text =
             getString(R.string.unknown_singer_name)
         else binding.singerName.text = singerName
 
@@ -102,10 +107,11 @@ class PlayingActivity : AppCompatActivity() {
         val bindServiceIntent = Intent(this, MusicService::class.java).apply {
             // 将歌曲传递给service进行播放
             putExtra(PLAYING_FLAG, isChangeSong)
-            putExtra("song", song)
-            // putExtra("name", name)
-            // putExtra("singerName", singerName)
-            // putExtra("path", path)
+            // putExtra("song", song)
+            putExtra("id", intent.getIntExtra("id", 0))
+            putExtra("name", name)
+            putExtra("singerName", singerName)
+            putExtra("path", path)
         }
         bindService(bindServiceIntent, mConn, BIND_AUTO_CREATE)
 
@@ -161,8 +167,27 @@ class PlayingActivity : AppCompatActivity() {
             // 切换下一首按钮可点
             setNextSongBtnState(R.drawable.skip_next, true)
         }
+        // 绑定喜欢按钮
+        var isLike = intent.getIntExtra("isLike", 0)
+        updatePlayingLikeImg(isLike)
+        binding.playingLikeBtn.setOnClickListener {
+            isLike = if (isLike == 1) 0 else 1
+            // 修改数据
+            val values = ContentValues().apply {
+                put("isLike", isLike)
+            }
+            val uri = Uri.parse("content://$AUTHORITY/$TABLE_NAME/${intent.getIntExtra("id", 0)}")
+            val count = contentResolver.update(uri, values, null)
+            // 修改图片
+            if (count > 0) updatePlayingLikeImg(isLike)
+        }
     }
 
+
+    private fun updatePlayingLikeImg(isLike: Int) {
+        if (isLike == 1) binding.playingLikeBtn.setImageResource(R.drawable.favorite_normal_35)
+        else binding.playingLikeBtn.setImageResource(R.drawable.favorite_border_35)
+    }
 
     // 设置上一首按钮状态
     private fun setPrevSongBtnState(resId: Int, clickable: Boolean) {

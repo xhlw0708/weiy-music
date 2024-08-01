@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginEnd="5dp"
-                android:textColor="@color/weiy_playing_color"
+                android:textColor="@color/weiy_theme_color"
                 android:text="歌曲" />
 
             <!--<TextView
@@ -88,7 +88,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/jay1" />
+                    app:srcCompat="@drawable/playing_music" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline16"
@@ -141,7 +141,7 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/playingLikeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toTopOf="@+id/guideline16"

@@ -47,4 +47,4 @@ fun callAddSong(){
 
 - [ ] 歌曲列表页跳转到播放页，通过intent传输数据，startActivity的时候，第二个activity获取的数据有误。传对象不行，传字符串可以。可能是序列化问题
 
-- [ ] 
+- [ ] TextView跑马灯无效果

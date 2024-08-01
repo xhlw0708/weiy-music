@@ -48,8 +48,9 @@ class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>,
 
         holder.songName.text = song.name
         holder.songSinger.text = song.singerName
-
-        when(flag) {
+        holder.isLike.visibility = View.GONE
+        holder.download.visibility = View.GONE
+        /*when(flag) {
             PageFlag.HOME_FRAGMENT,
             PageFlag.MORE_SONG_LIST_ACTIVITY -> {
                 holder.isLike.visibility = View.GONE
@@ -58,19 +59,18 @@ class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>,
             PageFlag.LIKE_SONG_LIST_ACTIVITY -> {
                 holder.isLike.visibility = View.GONE
             }
-            /*else -> {
+            else -> {
                 holder.isLike.setOnClickListener{
                     song.isLike = if (song.isLike == 0) 1 else 0
                     if (song.isLike == 0) holder.isLike.setImageResource(R.drawable.favorite_border)
                     else holder.isLike.setImageResource(R.drawable.favorite_normal)
                 }
-            }*/
-        }
+            }
+        }*/
 
         holder.songLayout.setOnClickListener{
             val intent = Intent("com.liaowei.music.broadcast.MusicBroadcast")
             intent.putExtra(UPDATE_PLAYING_FLAG, UPDATE_PLAYING_TAB)
-
             intent.putExtra("song", song)
             val localBroadcastManager = LocalBroadcastManager.getInstance(fragment!!.requireContext())
             localBroadcastManager.sendBroadcast(intent)
@@ -80,11 +80,11 @@ class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>,
     override fun getItemCount(): Int = songList.size
 
     inner class SongListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val songLayout = itemView.findViewById<LinearLayout>(R.id.song_layout)
-        val songCoverImg = itemView.findViewById<ImageView>(R.id.common_song_cover_img)
-        val songName = itemView.findViewById<TextView>(R.id.common_song_name)
-        val songSinger = itemView.findViewById<TextView>(R.id.common_song_singer)
-        val isLike = itemView.findViewById<ImageView>(R.id.common_is_like)
-        val download = itemView.findViewById<ImageView>(R.id.common_download)
+        val songLayout: LinearLayout = itemView.findViewById(R.id.song_layout)
+        val songCoverImg: ImageView = itemView.findViewById(R.id.common_song_cover_img)
+        val songName: TextView = itemView.findViewById(R.id.common_song_name)
+        val songSinger: TextView = itemView.findViewById(R.id.common_song_singer)
+        val isLike: ImageView = itemView.findViewById(R.id.common_is_like)
+        val download: ImageView = itemView.findViewById(R.id.common_download)
     }
 }

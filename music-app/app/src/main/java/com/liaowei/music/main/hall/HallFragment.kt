@@ -2,6 +2,7 @@ package com.liaowei.music.main.hall
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +18,8 @@ import com.liaowei.music.common.constant.PageFlag
 import com.liaowei.music.common.fragment.SongFragment
 import com.liaowei.music.databinding.FragmentHallBinding
 import com.liaowei.music.event.EventMessage
+import com.liaowei.music.model.domain.Song
+import com.liaowei.music.model.provider.MusicContentProvider.Companion.SONG_CONTENT_URI
 import org.greenrobot.eventbus.EventBus
 
 class HallFragment : Fragment() {
@@ -72,12 +75,29 @@ class HallFragment : Fragment() {
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                // binding.topTitle.text = topTitles[position] // 更换顶部名称
-                // Toast.makeText(requireContext(), "$position", Toast.LENGTH_SHORT).show()
-                //
-                EventBus.getDefault().post(EventMessage(position, "this is $position"))
+                getCategoryListAndPush(position)
             }
         })
+    }
 
+    fun getCategoryListAndPush(position: Int) {
+        val songList: ArrayList<Song> = ArrayList()
+        // 根据分类查询
+        val cursor = requireActivity()
+            .contentResolver
+            .query(SONG_CONTENT_URI, null, "category = ?", Array(1){ classifyList[position] }, null)
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val name = cursor.getString(cursor.getColumnIndexOrThrow("name")) // 歌曲名称
+                val resourceId = cursor.getString(cursor.getColumnIndexOrThrow("resourceId")) // 文件路径
+                val singerName = cursor.getString(cursor.getColumnIndexOrThrow("singerName")) // 歌手名称
+                val song = Song(name, singerName, resourceId)
+                song.id = id
+                songList.add(song)
+            }
+            cursor.close()
+        }
+        EventBus.getDefault().post(EventMessage(position, songList))
     }
 }

@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity() {
     private val handler = @SuppressLint("HandlerLeak") object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
+            val id = msg.data.getInt("id")
+            val isLike = msg.data.getInt("isLike")
             // 更改播放栏UI
             val name = msg.data.getString("name")
             val singerName = msg.data.getString("singerName")
@@ -81,10 +83,12 @@ class MainActivity : AppCompatActivity() {
             // 播放音乐
             val intent = Intent(this@MainActivity, PlayingActivity::class.java).apply {
                 putExtra(PLAYING_FLAG, PLAYING_MUSIC)
-                putExtra("song", song)
-                // putExtra("name", name)
-                // putExtra("singerName", singerName)
-                // putExtra("path", path)
+                // putExtra("song", song)
+                putExtra("id", id)
+                putExtra("name", name)
+                putExtra("singerName", singerName)
+                putExtra("path", path)
+                putExtra("isLike", isLike)
             }
             // 跳转activity
             startActivity(intent)
@@ -179,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                     values.put("name", name)
                     values.put("singerId", cursor.position)
                     values.put("singerName", singerName)
-                    values.put("img", R.drawable.jay1)
+                    values.put("img", R.drawable.playing_music)
                     values.put("resourceId", path)
                     values.put("playNumber", 1)
                     values.put("isLike", 0)
