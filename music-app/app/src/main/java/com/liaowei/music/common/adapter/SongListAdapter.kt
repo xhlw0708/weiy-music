@@ -1,5 +1,6 @@
 package com.liaowei.music.common.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
@@ -18,7 +19,7 @@ import com.liaowei.music.common.constant.MusicConstant.Companion.UPDATE_PLAYING_
 import com.liaowei.music.common.constant.PageFlag
 import com.liaowei.music.model.domain.Song
 
-class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>, private val flag: Int) :
+class SongListAdapter(val context: Context?, private val songList: List<Song>, private val flag: Int) :
     RecyclerView.Adapter<SongListAdapter.SongListViewHolder>() {
 
     companion object {
@@ -72,7 +73,7 @@ class SongListAdapter(val fragment: Fragment?, private val songList: List<Song>,
             val intent = Intent("com.liaowei.music.broadcast.MusicBroadcast")
             intent.putExtra(UPDATE_PLAYING_FLAG, UPDATE_PLAYING_TAB)
             intent.putExtra("song", song)
-            val localBroadcastManager = LocalBroadcastManager.getInstance(fragment!!.requireContext())
+            val localBroadcastManager = LocalBroadcastManager.getInstance(context!!)
             localBroadcastManager.sendBroadcast(intent)
         }
     }

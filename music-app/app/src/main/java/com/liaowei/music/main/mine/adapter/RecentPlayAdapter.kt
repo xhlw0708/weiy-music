@@ -1,5 +1,7 @@
 package com.liaowei.music.main.mine.adapter
 
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,10 @@ import com.liaowei.music.R
 import com.liaowei.music.model.domain.Song
 
 class RecentPlayAdapter(private val songList: List<Song>): RecyclerView.Adapter<RecentPlayAdapter.RecentPlayViewHolder>() {
+
+    companion object {
+        private val retriever = MediaMetadataRetriever()
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -19,10 +25,18 @@ class RecentPlayAdapter(private val songList: List<Song>): RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: RecentPlayAdapter.RecentPlayViewHolder, position: Int) {
         val song = songList[position]
-        holder.coverImg.setImageResource(song.img)
+        retriever.setDataSource(song.resourceId)
+        val embeddedPicture = retriever.embeddedPicture
+        if (embeddedPicture != null) {
+            val bitmap = BitmapFactory.decodeByteArray(embeddedPicture, 0, embeddedPicture.size)
+            holder.coverImg.setImageBitmap(bitmap)
+        } else{
+            holder.coverImg.setImageResource(R.drawable.playing_music)
+        }
+
         holder.playName.text = song.name
         holder.playName.requestFocus() // 请求焦点
-        holder.playSinger.text = if (song.singerId == 1) "周杰伦" else "蔡徐坤"
+        holder.playSinger.text = song.singerName
     }
 
     override fun getItemCount(): Int = songList.size

@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
         }
 
         // 加载“大家都在听”数据
-        binding.homeListenRv.adapter = SongListAdapter(this, songList, PageFlag.HOME_FRAGMENT)
+        binding.homeListenRv.adapter = SongListAdapter(requireContext(), songList, PageFlag.HOME_FRAGMENT)
         binding.homeListenRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val singerList: ArrayList<Singer> = arrayListOf(

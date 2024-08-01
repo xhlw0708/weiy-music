@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/mine_recent_play_img"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:background="@drawable/rounded_image"
         android:contentDescription="@string/cover_img"
         app:srcCompat="@drawable/jay1" />

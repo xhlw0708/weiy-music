@@ -42,6 +42,7 @@ import com.liaowei.music.main.mine.MineFragment
 import com.liaowei.music.model.domain.Song
 import com.liaowei.music.model.provider.MusicContentProvider.Companion.SONG_CONTENT_URI
 import com.liaowei.music.service.MusicService
+import java.time.Instant
 import java.util.Random
 
 
@@ -80,6 +81,16 @@ class MainActivity : AppCompatActivity() {
                 binding.mainPlayingImg.setImageBitmap(bitmap)
             }
             val song = Song(name?:"", singerName?:"", path?:"")
+
+            // 存储当前播放的歌曲信息
+            getPreferences(MODE_PRIVATE).edit().apply {
+                putInt("current_id", id)
+                putString("current_name", name)
+                putString("current_singerName", singerName)
+                putString("current_path", path)
+                putInt("current_isLike", isLike)
+            }.apply()
+
             // 播放音乐
             val intent = Intent(this@MainActivity, PlayingActivity::class.java).apply {
                 putExtra(PLAYING_FLAG, PLAYING_MUSIC)
@@ -90,6 +101,11 @@ class MainActivity : AppCompatActivity() {
                 putExtra("path", path)
                 putExtra("isLike", isLike)
             }
+
+            getSharedPreferences("recentPlay", MODE_PRIVATE).edit().apply {
+                putInt("id_${Instant.now().toEpochMilli()}", id) // 以时间戳的形式记录id，保证key不重复
+            }.apply()
+
             // 跳转activity
             startActivity(intent)
         }
@@ -156,7 +172,13 @@ class MainActivity : AppCompatActivity() {
         // 播放栏绑定单击事件
         binding.mainPlayingLayout.setOnClickListener {
             if (MusicService.getPlayListSize() != 0) {
-                val intent = Intent(this, PlayingActivity::class.java)
+                val intent = Intent(this, PlayingActivity::class.java).apply {
+                    putExtra("id", getPreferences(MODE_PRIVATE).getInt("current_id", 0))
+                    putExtra("name", getPreferences(MODE_PRIVATE).getString("current_name", ""))
+                    putExtra("singerName", getPreferences(MODE_PRIVATE).getString("current_singerName", ""))
+                    putExtra("path", getPreferences(MODE_PRIVATE).getString("current_path", ""))
+                    putExtra("isLike", getPreferences(MODE_PRIVATE).getInt("current_isLike", 0))
+                }
                 startActivity(intent)
                 overridePendingTransition(R.anim.playing_from_bottom_to_top, 0)
                 // overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.playing_from_bottom_to_top, 0)

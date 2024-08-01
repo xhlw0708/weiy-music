@@ -73,7 +73,7 @@ class SongFragment : Fragment() {
                 cursor.close()
             }
         }
-        binding.commonSongListRv.adapter = SongListAdapter(this, songList, PageFlag.SONG_FRAGMENT)
+        binding.commonSongListRv.adapter = SongListAdapter(requireContext(), songList, PageFlag.SONG_FRAGMENT)
         binding.commonSongListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 

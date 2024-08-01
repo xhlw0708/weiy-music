@@ -6,22 +6,29 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.liaowei.music.common.adapter.SongListAdapter
 import com.liaowei.music.common.constant.PageFlag
 import com.liaowei.music.databinding.ActivitySongListBinding
+import com.liaowei.music.main.mine.MineFragment
+import com.liaowei.music.main.mine.MineFragment.Companion.songList
+import com.liaowei.music.main.mine.MineViewModel
 import com.liaowei.music.model.domain.Song
 
 class SongListActivity : AppCompatActivity() {
 
     private val binding: ActivitySongListBinding by lazy { ActivitySongListBinding.inflate(layoutInflater) }
+    private var fragment: Fragment? = null
+
 
     @SuppressLint("ClickableViewAccessibility")
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,12 +41,16 @@ class SongListActivity : AppCompatActivity() {
 
         // 渲染数据
         val songList = intent.getParcelableArrayListExtra("songList", Song::class.java) as ArrayList<Song>
-        binding.likeRv.adapter = SongListAdapter(null, songList, intent.getIntExtra("flag", PageFlag.DEFAULT_SONG_LIST_ACTIVITY))
+        val flag = intent.getIntExtra("flag", PageFlag.DEFAULT_SONG_LIST_ACTIVITY)
+        /*if (flag == PageFlag.LIKE_SONG_LIST_ACTIVITY) {
+            binding.likeRv.adapter = SongListAdapter(this, songList, flag)
+        }*/
+        binding.likeRv.adapter = SongListAdapter(this, songList, flag)
         binding.likeRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.songTopTitle.text = intent.getStringExtra("songTopTitle")
 
         // 绑定返回单击事件
-        binding.songTopTitle.setOnTouchListener { v, event ->
+        binding.songTopTitle.setOnTouchListener { _, event ->
             if (event?.action == MotionEvent.ACTION_UP) {
                 val leftDrawable = binding.songTopTitle.compoundDrawables[0]
                 if (leftDrawable != null) {
@@ -55,6 +66,5 @@ class SongListActivity : AppCompatActivity() {
             }
             true // 消耗事件
         }
-
     }
 }

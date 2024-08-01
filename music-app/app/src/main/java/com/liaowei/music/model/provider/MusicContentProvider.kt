@@ -68,10 +68,18 @@ class MusicContentProvider : ContentProvider() {
         when(uriMatcher.match(uri)) {
             SONG_ITEM -> {
                 val id = ContentUris.parseId(uri).toInt()
-                rows = db.update(TABLE_NAME, values, "id = ?", arrayOf(id.toString()))
+                // rows = db.update(TABLE_NAME, values, "id = ?", arrayOf(id.toString()))
+                val isLike = values?.get("isLike")
+                db.beginTransaction()
+                try {
+                    db.execSQL("update song set isLike = $isLike where id = $id ")
+                    db.setTransactionSuccessful()
+                } catch (e: Exception) {
+                    db.endTransaction()
+                }
             }
         }
-        return rows
+        return 1
     }
 
     override fun getType(uri: Uri): String? {
