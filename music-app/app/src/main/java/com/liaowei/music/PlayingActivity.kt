@@ -25,6 +25,7 @@ import com.liaowei.music.databinding.ActivityPlayingBinding
 import com.liaowei.music.model.domain.Song
 import com.liaowei.music.model.provider.MusicContentProvider.Companion.AUTHORITY
 import com.liaowei.music.model.provider.MusicContentProvider.Companion.SONG_CONTENT_URI
+import com.liaowei.music.service.MusicForegroundService
 import com.liaowei.music.service.MusicService
 import com.liaowei.music.service.MusicService.MusicBinder
 
@@ -114,7 +115,11 @@ class PlayingActivity : AppCompatActivity() {
             putExtra("path", path)
         }
         bindService(bindServiceIntent, mConn, BIND_AUTO_CREATE)
-
+        val toForegroundServiceIntent = Intent(this, MusicForegroundService::class.java).apply {
+            putExtra("name", name)
+            putExtra("singerName", singerName)
+        }
+        startService(toForegroundServiceIntent)
     }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)

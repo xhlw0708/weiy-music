@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         val permission: Array<String> = arrayOf(
             Manifest.permission.READ_MEDIA_AUDIO,
+            Manifest.permission.POST_NOTIFICATIONS
         )
         private val retriever = MediaMetadataRetriever()
     }

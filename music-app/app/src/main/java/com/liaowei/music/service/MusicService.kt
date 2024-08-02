@@ -1,9 +1,15 @@
 package com.liaowei.music.service
 
+import android.Manifest
+import android.R
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
-import android.content.res.AssetFileDescriptor
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
@@ -14,13 +20,17 @@ import android.os.Message
 import android.os.Messenger
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_MUSIC
 import com.liaowei.music.model.domain.Song
 import java.util.LinkedList
 
+
+@SuppressLint("ForegroundServiceType")
 class MusicService : Service() {
 
     private val binder = MusicBinder(this)
@@ -78,7 +88,6 @@ class MusicService : Service() {
 
 
     @SuppressLint("DiscouragedApi")
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onBind(intent: Intent): IBinder {
         val type = intent.getIntExtra(PLAYING_FLAG, DEFAULT_MUSIC_TYPE)
         // val song = intent.getParcelableExtra("song", Song::class.java)
@@ -107,7 +116,6 @@ class MusicService : Service() {
         }
         return binder
     }
-
 
     override fun onUnbind(intent: Intent?): Boolean {
         /*playList?.clear()
