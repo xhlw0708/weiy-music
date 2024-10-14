@@ -10,16 +10,20 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.view.View
 import android.view.animation.RotateAnimation
 import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.viewModels
 import com.liaowei.music.common.constant.DBConstant.Companion.TABLE_NAME
 import com.liaowei.music.common.constant.MusicConstant.Companion.DEFAULT_MUSIC_TYPE
 import com.liaowei.music.common.constant.MusicConstant.Companion.PLAYING_FLAG
+import com.liaowei.music.common.fragment.SongViewModel
 import com.liaowei.music.common.utils.AnimationUtil
 import com.liaowei.music.databinding.ActivityPlayingBinding
 import com.liaowei.music.model.domain.Song
@@ -95,12 +99,15 @@ class PlayingActivity : AppCompatActivity() {
         val song = Song(name ?: "", singerName ?: "", path ?: "")
         if (name == null || "" == name)
             binding.playingCoverImg.setImageResource(R.drawable.playing_music)
+
         if (singerName == null || "" == singerName) binding.name.text =
             getString(R.string.unknown_song_name)
         else binding.name.text = name
+
         if (path == null || "" == path) binding.singerName.text =
             getString(R.string.unknown_singer_name)
         else binding.singerName.text = singerName
+
 
         // 给图片设置动画
         AnimationUtil.startRotateAnimation(binding.playingCoverImg)
@@ -124,6 +131,8 @@ class PlayingActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun initView() {
+        // 隐藏喜欢图案
+        binding.playingLikeBtn.visibility = View.GONE
         // 绑定返回按钮
         binding.playingBack.setOnClickListener { finish() }
         // 改变播放按钮图片
@@ -155,22 +164,32 @@ class PlayingActivity : AppCompatActivity() {
         binding.playingNextSongBtn.setOnClickListener {
             // 播放下一首
             musicService.nextSong()
+            // 更新当前歌曲视图
+            updateCurrentSongView()
+
             if (musicService.getPlayListSize() - 1 == musicService.getIndex()) {
                 // 设置下一首按钮不可点
                 setNextSongBtnState(R.drawable.skip_next_gray, false) // 切换下一首状态为不可点
             }
             // 设置上一首按钮可点
             setPrevSongBtnState(R.drawable.skip_previous, true)
+            // 更新播放按钮
+            changePlayingBtnImg()
         }
         // 绑定上一首按钮
         binding.playingPrevSongBtn.setOnClickListener {
             // 播放上一首
             musicService.preSong()
+            // 更新当前歌曲视图
+            updateCurrentSongView()
+
             if (musicService.getIndex() == 0) {
                 setPrevSongBtnState(R.drawable.skip_previous_gray, false)
             }
             // 切换下一首按钮可点
             setNextSongBtnState(R.drawable.skip_next, true)
+            // 更新播放按钮
+            changePlayingBtnImg()
         }
         // 绑定喜欢按钮
         var isLike = intent.getIntExtra("isLike", 0)
@@ -186,6 +205,15 @@ class PlayingActivity : AppCompatActivity() {
             // 修改图片
             if (count > 0) updatePlayingLikeImg(isLike)
         }
+    }
+
+    // 更新当前歌曲视图
+    private fun updateCurrentSongView() {
+        // 获取当前歌曲
+        val song = musicService.getCurrentSong()
+        // 更新播放界面
+        binding.name.text = song?.name ?: "暂无歌名"
+        binding.singerName.text = song?.singerName ?: "暂无歌手名"
     }
 
 

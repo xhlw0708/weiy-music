@@ -19,6 +19,7 @@ import android.view.Gravity
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -262,6 +263,7 @@ class MainActivity : AppCompatActivity() {
         localBroadcastManager.registerReceiver(MusicReceiver(handler), intentFilter)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         if (MusicService.getMediaPlayerStatus()) {
@@ -271,6 +273,12 @@ class MainActivity : AppCompatActivity() {
             binding.mainPlayingPlay.setImageResource(R.drawable.play_circle)
             binding.mainPlayingPlay.tag = R.drawable.play_circle
         }
+        if (MusicService.sharedSongName == null) {
+            binding.mainPlayingTitle.text = getString(R.string.main_playing_tab_content)
+        } else {
+            binding.mainPlayingTitle.text = "${MusicService.sharedSongName}-${MusicService.sharedSinger}"
+        }
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

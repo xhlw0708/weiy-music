@@ -34,13 +34,15 @@ import java.util.LinkedList
 class MusicService : Service() {
 
     private val binder = MusicBinder(this)
-    // 维护一个播放队列
     companion object {
+        // 维护一个播放队列
         private var playList: LinkedList<Song>? = LinkedList()
         val mediaPlayer: MediaPlayer = MediaPlayer()
         private var index = 0 // 记录播放的索引
         const val GET_SONG_STATE_MSG = 1 // 获取歌曲时长和播放进度
         const val SEND_SONG_STATE_MSG = 2 // 发送给客户端消息
+        var sharedSongName: String? = null
+        var sharedSinger: String? = null
         // 开启或暂停
         fun startOrPause(isPlay: Boolean) {
             if (isPlay) mediaPlayer.start() else mediaPlayer.pause()
@@ -104,6 +106,8 @@ class MusicService : Service() {
                     mediaPlayer.reset()
                     mediaPlayer.setDataSource(song.resourceId)
                     mediaPlayer.prepare()
+                    sharedSongName = playList?.get(index)?.name
+                    sharedSinger = playList?.get(index)?.singerName
                     startOrPause(true)
                 } else{
                     Toast.makeText(baseContext, "当前音乐资源为空", Toast.LENGTH_SHORT).show()
@@ -137,11 +141,16 @@ class MusicService : Service() {
             index++
             mediaPlayer.setDataSource(playList?.get(index)?.resourceId!!)
             mediaPlayer.prepare()
+            sharedSongName = playList?.get(index)?.name
+            sharedSinger = playList?.get(index)?.singerName
             startOrPause(true)
         } else if (playList?.size!! == index + 1) {
             Toast.makeText(baseContext, "已经是最后一首了", Toast.LENGTH_SHORT).show()
         }
     }
+
+    // 获取当前歌曲
+    fun getCurrentSong(): Song? = playList?.get(index)
 
 
     // 上一曲
@@ -155,6 +164,8 @@ class MusicService : Service() {
             index--
             mediaPlayer.setDataSource(playList?.get(index)?.resourceId!!)
             mediaPlayer.prepare()
+            sharedSongName = playList?.get(index)?.name
+            sharedSinger = playList?.get(index)?.singerName
             startOrPause(true)
         }
     }
